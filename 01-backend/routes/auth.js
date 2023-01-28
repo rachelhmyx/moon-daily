@@ -8,11 +8,13 @@ mongoose.connect("mongodb://127.0.0.1:27017/Moon-Daily");
 
 router.post("/register", async (req, res) => {
   try {
-    const email = req.body;
+    const email = req.body.email;
+    const password = req.body.password;
     const found = await findDocuments(
       {
         query: {
           email: email,
+          password: password,
         },
       },
       "users"
@@ -20,7 +22,7 @@ router.post("/register", async (req, res) => {
     if (found && found.length > 0) {
       res.send({ message: "User Already Exists!" });
     } else {
-      const newUser = new User(email);
+      const newUser = new User(req.body);
       newUser.save().then((result) => {
         res.send(result);
       });

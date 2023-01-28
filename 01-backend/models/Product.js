@@ -18,6 +18,12 @@ const productSchema = new Schema({
     default: 0,
     required: false,
   },
+  sold: {
+    type: Number,
+    default: 0,
+    min: 0,
+    required: true,
+  },
   description: { type: String },
   categoryId: { type: Schema.Types.ObjectId, ref: "Category" },
   supplierId: { type: Schema.Types.ObjectId, ref: "Supplier" },
