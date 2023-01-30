@@ -1,6 +1,7 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
 .trigger {
   padding: 0 24px;
   font-size: 18px;
@@ -27,4 +28,39 @@ body {
   min-height: 100vh;
 }
 
+.ant-layout-sider {
+  flex: 0 0 250px !important;
+  max-width: 250px !important;
+  min-width: 250px !important;
+  width: 250px !important;
+}
 
+.ant-layout-sider-collapsed {
+  flex: 0 0 80px !important;
+  max-width: 80px !important;
+  min-width: 80px !important;
+  width: 80px !important;
+}
+
+.sm-logo {
+  display: none;
+}
+.ant-layout-sider-collapsed .sm-logo {
+  display: block;
+}
+.ant-layout-sider-collapsed .lg-logo {
+  display: none;
+}
+
+main {
+  overflow-y: scroll;
+}
+
+.logo {
+  background-color: #9AE6B4;
+  margin: 0;
+  height: 65px;
+}
+.ant-menu-title-content {
+  font-size: 18px;
+}

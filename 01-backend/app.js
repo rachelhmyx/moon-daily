@@ -34,7 +34,6 @@ app.use(
 );
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 app.use("/user", authRouter);
 app.use("/categories", categoriesRouter);
 app.use("/customers", customersRouter);

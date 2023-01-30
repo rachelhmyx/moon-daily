@@ -4,7 +4,7 @@ import CustomInput from '../../components/CustomInput'
 function ForgotPassword() {
   return (
     <>
-    <div className="py-5" style={{ background: "#fff333", minHeight: "100vh" }}>
+    <div className="py-5" style={{ background: "#9AE6B4", minHeight: "100vh" }}>
         <br/>
         <br/>
         <br/>
@@ -20,7 +20,7 @@ function ForgotPassword() {
            
             <button
               className="border-0 px-3 py-2 text-white fw-bold w-100"
-              style={{ background: "#fff333" }}
+              style={{ background: "#68D391" }}
               type="submit"
             >
               Send Link
