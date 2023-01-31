@@ -5,7 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
 var categoriesRouter = require("./routes/categories");
 var customersRouter = require("./routes/customers");
@@ -34,7 +33,7 @@ app.use(
 );
 
 app.use("/", indexRouter);
-app.use("/user", authRouter);
+app.use("/auth", authRouter);
 app.use("/categories", categoriesRouter);
 app.use("/customers", customersRouter);
 app.use("/employees", employeesRouter);

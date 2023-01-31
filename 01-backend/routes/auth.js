@@ -1,66 +1,40 @@
-const { default: mongoose } = require("mongoose");
-const { User } = require("../models");
 var express = require("express");
 var router = express.Router();
-const { findDocuments } = require("../helpers/MongoDBHelper");
+const yup = require("yup");
+const { validateSchema } = require("../schemas");
+const { findDocuments, findDocument } = require("../helpers/MongoDbHelper");
 
-mongoose.connect("mongodb://127.0.0.1:27017/Moon-Daily");
+//Login validate: data user đưa lên có đúng với kiểu đã được định nghĩa hay không:
+const loginSchema = yup.object({
+  body: yup.object({
+    username: yup.string().email().required(),
+    password: yup.string().required(),
+  }),
+});
 
-//Create a User:
-router.post("/register", async (req, res) => {
-  try {
-    const email = req.body.email;
+router.post(
+  "/login-validate",
+  validateSchema(loginSchema),
+  async (req, res) => {
+    const username = req.body.username;
     const password = req.body.password;
+
     const found = await findDocuments(
       {
         query: {
-          email: email,
+          username: username,
           password: password,
         },
       },
-      "users"
+      "login"
     );
+
     if (found && found.length > 0) {
-      res.send({ message: "User Already Exists!" });
-    } else {
-      const newUser = new User(req.body);
-      newUser.save().then((result) => {
-        res.send(result);
-      });
+      res.send({ message: "Login Success" });
+      return;
     }
-  } catch (error) {
-    res.sendStatus(500);
-    console.log("Error:", error);
+    res.status(401).send({ message: "Login Failed" });
   }
-});
-
-//Login User:
-router.post("/login", async (req, res) => {
-  try {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    //Check if user exist or not:
-
-    const found = await findDocuments(
-      {
-        query: {
-          email: email,
-          password: password,
-        },
-      },
-      "users"
-    );
-
-    if (found && (await found.isPasswordMatched(password))) {
-      res.json(found);
-    } else {
-      throw new Error("Invalid Credentials");
-    }
-  } catch (error) {
-    res.sendStatus(500);
-    console.log("Error:", error);
-  }
-});
+);
 
 module.exports = router;
