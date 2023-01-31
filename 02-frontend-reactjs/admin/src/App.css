@@ -45,9 +45,11 @@ body {
 .sm-logo {
   display: none;
 }
+
 .ant-layout-sider-collapsed .sm-logo {
   display: block;
 }
+
 .ant-layout-sider-collapsed .lg-logo {
   display: none;
 }
@@ -61,6 +63,30 @@ main {
   margin: 0;
   height: 65px;
 }
+
 .ant-menu-title-content {
   font-size: 18px;
+}
+
+/* Login Form */
+.login-form {
+  max-width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.form-block {
+  padding-top: 200px;
+  background-color: #9AE6B4;
+  min-height: 100vh;
 }

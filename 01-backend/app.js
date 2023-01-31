@@ -4,6 +4,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+const passport = require("passport");
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const jwtSettings = require("./constants/jwtSettings");
+
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
 var categoriesRouter = require("./routes/categories");
@@ -14,6 +19,7 @@ var suppliersRouter = require("./routes/suppliers");
 var ordersRouter = require("./routes/orders");
 
 var cors = require("cors");
+const { findDocument } = require("./helpers/MongoDbHelper");
 var app = express();
 
 // view engine setup
@@ -29,6 +35,31 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(
   cors({
     origin: "*",
+  })
+);
+
+// Passport: jwt
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = jwtSettings.SECRET;
+opts.audience = jwtSettings.AUDIENCE;
+opts.issuer = jwtSettings.ISSUER;
+
+passport.use(
+  new JwtStrategy(opts, async (payload, done) => {
+    //new JwtStrategy giống như là 1 middleware gác cổng cho các route, payload là data đc đưa vào,  sua khi check xong phần kĩ thuật thì sẽ chạy xuống câu lệnh if bên dưới
+    // console.log(payload);
+    const id = payload.sub;
+    const found = await findDocument(id, "login");
+    if (found && found.active) {
+      let error = null;
+      let user = true;
+      return done(error, user);
+    } else {
+      let error = null;
+      let user = false;
+      return done(error, user);
+    }
   })
 );
 
