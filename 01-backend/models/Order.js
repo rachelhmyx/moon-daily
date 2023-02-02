@@ -26,7 +26,7 @@ orderDetailsSchema.set("toJSON", { virtuals: true });
 
 //------------------Order-----------------------//
 const orderSchema = new Schema({
-  createDate: {
+  createdDate: {
     type: Date,
     required: true,
     default: Date.now,
@@ -39,7 +39,7 @@ const orderSchema = new Schema({
         if (!value) {
           return true;
         }
-        if (value < this.createDate) {
+        if (value < this.createdDate) {
           return false;
         }
         return true;

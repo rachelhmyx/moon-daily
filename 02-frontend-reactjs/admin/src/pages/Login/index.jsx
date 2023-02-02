@@ -10,8 +10,8 @@ function Login() {
       .post("/auth/login-jwt", { username, password })
       .then((response) => {
         //Login OK
-        window.location.href = "/admin";
-        localStorage.setItem("token", response.data.token);
+        window.location.href = "/home";
+        console.log(response.data);
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -35,7 +35,6 @@ function Login() {
               password: "",
               remember: true,
             }}
-            
             onFinish={onFinish}
           >
             <Form.Item
@@ -44,12 +43,10 @@ function Login() {
                 { required: true, message: "Please input your email" },
                 { type: "email", message: "Email is invalid" },
               ]}
-              
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="User Email"
-                
               />
             </Form.Item>
             <Form.Item
@@ -88,21 +85,6 @@ function Login() {
               Or <a href="/">register now!</a>
             </Form.Item>
           </Form>
-
-          {/* <form action="">
-            <CustomInput type="text" label="Email Address" id="email" />
-            <CustomInput type="password" label="Password" id="pass" />
-            <div className="mb-3 text-end">
-              <Link to="/forgot-password">Forgot Password ?</Link>
-            </div>
-            <Link to="/admin"
-              className="border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none"
-              style={{ background: "#68D391" }}
-              type="submit"
-            >
-              Login
-            </Link>
-          </form> */}
         </div>
       </div>
     </>

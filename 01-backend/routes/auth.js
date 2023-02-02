@@ -80,12 +80,57 @@ router.post(
         algorithm: "HS512", //Thuật toán mã hóa
       });
 
-      res.send({ message: "Login Success", token });
+      //----------------Phần mở rộng của jwt- cấp lại token khi nó hết hạn-----------------------------//
+      //Refresh Token: sử dụng refresh token trong trường hợp token đã sử dụng trước đó bị hết hạn:
+      const refreshToken = jwt.sign(
+        {
+          id,
+        },
+        secret,
+        {
+          expiresIn: "30d", //hạn dùng là 30 ngày
+        }
+      );
+
+      res.send({ message: "Login Success", token, refreshToken });
       return;
     }
     res.status(401).send({ message: "Login Failed" });
   }
 );
+
+//Gọi refresh token ra để rèn lại token cũ trc đó đã bị hết hạn:
+router.post("/refresh-token", async (req, res, next) => {
+  const { refreshToken } = req.body;
+  jwt.verify(refreshToken, jwtSettings.SECRET, async (err, decoded) => {
+    if (err) {
+      // return res.sendStatus(406); lỗi 406 là lỗi NOT ACCEPTABLE
+      return res.status(401).json({ message: "refreshToken is invalid" });
+    } else {
+      console.log("🍎 decoded", decoded);
+      const { id } = decoded;
+      const user = await findDocument(id, "login");
+      if (user && user.active) {
+        const secret = jwtSettings.SECRET;
+
+        const payload = {
+          message: "payload",
+        };
+
+        const token = jwt.sign(payload, secret, {
+          expiresIn: 10, //24 * 60 * 60, // expires in 24 hours (24 x 60 x 60)
+          audience: jwtSettings.AUDIENCE,
+          issuer: jwtSettings.ISSUER,
+          subject: id, // Thường dùng để kiểm tra JWT lần sau
+          algorithm: "HS512",
+        });
+
+        return res.json({ token });
+      }
+      return res.sendStatus(401);
+    }
+  });
+});
 
 router.get(
   "/login-authentication",
