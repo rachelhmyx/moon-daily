@@ -1,32 +1,28 @@
 const { default: mongoose } = require("mongoose");
-const { Product } = require("../models");
+const { SubCategory } = require("../models");
 var express = require("express");
 var router = express.Router();
 
 mongoose.connect("mongodb://127.0.0.1:27017/Moon-Daily");
-router.post("/", (req, res) => {
+
+router.post("/", (req, res, next) => {
   try {
     const data = req.body;
-    const newItem = new Product(data);
-    newItem
-      .save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.status(400).send(err);
-      });
+    const newItem = new SubCategory(data);
+    newItem.save().then((result) => {
+      res.send(result);
+    });
   } catch (error) {
     res.sendStatus(500);
-    console.log(error);
+    console.log("Error:", error);
   }
 });
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   try {
-    Product.find()
+    SubCategory.find()
       .populate("category")
-      .populate("supplier")
+
       .then((result) => {
         res.send(result);
       });
@@ -36,11 +32,22 @@ router.get("/", (req, res) => {
   }
 });
 
-router.patch("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
+  try {
+    const { id } = req.params;
+    SubCategory.findByIdAndDelete(id).then((result) => {
+      res.send(result);
+    });
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+router.patch("/:id", (req, res, next) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    Product.findByIdAndUpdate(id, data, { new: true })
+    SubCategory.findByIdAndUpdate(id, data, { new: true })
       .then((result) => {
         res.send(result);
       })
@@ -49,23 +56,6 @@ router.patch("/:id", (req, res) => {
       });
   } catch (error) {
     res.sendStatus(500);
-    console.log("Error:", error);
-  }
-});
-
-router.delete("/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    Product.findByIdAndDelete(id)
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.status(400).send(err);
-      });
-  } catch (error) {
-    res.sendStatus(500);
-    console.log("Error:", error);
   }
 });
 

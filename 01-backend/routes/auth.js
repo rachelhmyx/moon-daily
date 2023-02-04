@@ -80,7 +80,6 @@ router.post(
         algorithm: "HS512", //Thuật toán mã hóa
       });
 
-      //----------------Phần mở rộng của jwt- cấp lại token khi nó hết hạn-----------------------------//
       //Refresh Token: sử dụng refresh token trong trường hợp token đã sử dụng trước đó bị hết hạn:
       const refreshToken = jwt.sign(
         {
@@ -190,4 +189,5 @@ router.get(
     res.json({ ok: true });
   }
 );
+
 module.exports = router;

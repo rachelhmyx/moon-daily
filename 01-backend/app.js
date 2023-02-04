@@ -10,8 +10,10 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const jwtSettings = require("./constants/jwtSettings");
 
 var indexRouter = require("./routes/index");
+var signUpUserRouter = require("./routes/signup");
 var authRouter = require("./routes/auth");
 var categoriesRouter = require("./routes/categories");
+var subCategoriesRouter = require("./routes/subCategories");
 var customersRouter = require("./routes/customers");
 var employeesRouter = require("./routes/employees");
 var productsRouter = require("./routes/products");
@@ -66,7 +68,9 @@ passport.use(
 
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
+app.use("/sign-up", signUpUserRouter);
 app.use("/categories", categoriesRouter);
+app.use("/sub-categories", subCategoriesRouter);
 app.use("/customers", customersRouter);
 app.use("/employees", employeesRouter);
 app.use("/products", productsRouter);
