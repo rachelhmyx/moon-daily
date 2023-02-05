@@ -23,29 +23,29 @@ router.post("/", (req, res) => {
   }
 });
 
-router.post(
-  "/login-validate",
-  validateSchema(loginSchema),
-  async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
+// router.post(
+//   "/login-validate",
+//   validateSchema(loginSchema),
+//   async (req, res) => {
+//     const username = req.body.username;
+//     const password = req.body.password;
 
-    const found = await findDocuments(
-      {
-        query: {
-          username: username,
-          password: password,
-        },
-      },
-      "login"
-    );
+//     const found = await findDocuments(
+//       {
+//         query: {
+//           username: username,
+//           password: password,
+//         },
+//       },
+//       "login"
+//     );
 
-    if (found && found.length > 0) {
-      res.send({ message: "Login Success" });
-      return;
-    }
-    res.status(401).send({ message: "Login Failed" });
-  }
-);
+//     if (found && found.length > 0) {
+//       res.send({ message: "Login Success" });
+//       return;
+//     }
+//     res.status(401).send({ message: "Login Failed" });
+//   }
+// );
 
 module.exports = router;

@@ -16,6 +16,5 @@ module.exports = {
   Employee,
   Product,
   Order,
-  User,
   Income,
 };

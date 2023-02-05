@@ -3,8 +3,11 @@ const { Schema, model } = mongoose;
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const subCategorySchema = new Schema({
-  name: { type: Array, required: true },
+  name: { type: String, required: true },
   categoryId: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  active: { type: Boolean, required: true },
+  isDeleted: { type: Boolean, required: true },
+  sortOrder: { type: Number, required: true },
 });
 
 subCategorySchema.virtual("category", {
