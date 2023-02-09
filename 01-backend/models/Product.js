@@ -24,25 +24,63 @@ const productSchema = new Schema({
     min: 0,
     required: true,
   },
-  description: { type: String },
-  categoryId: { type: Schema.Types.ObjectId, ref: "Category" },
-  supplierId: { type: Schema.Types.ObjectId, ref: "Supplier" },
+  description: { type: String, required: false },
+  categoryId: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  subCategoryId: {
+    type: Schema.Types.ObjectId,
+    ref: "SubCategory",
+    required: true,
+  },
+  supplierId: { type: Schema.Types.ObjectId, ref: "Supplier", required: true },
+  rating: { type: Number, required: false },
+  active: { type: Boolean, required: true },
+  isDeleted: { type: Boolean, required: true },
+  promotionPosition: { type: Array, required: false },
+  createdDate: { type: Date, required: true },
+  createdBy: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
+  hotItem: { type: Boolean, required: false },
+  newArrival: { type: Boolean, required: false },
+  size: { type: Array, required: false },
+  color: { type: Array, required: false },
+  features: { type: String, required: false },
+  services: { type: String, required: false },
 });
 
 productSchema.virtual("total").get(function () {
   return (this.price * (100 - this.discount)) / 100;
 });
 
+//Total Revenue:
+productSchema.virtual("totalRevenue").get(function () {
+  return this.sold * ((this.price * (100 - this.discount)) / 100);
+});
+
+//Category Information:
 productSchema.virtual("category", {
   ref: "Category",
   localField: "categoryId",
   foreignField: "_id",
   justOne: true,
 });
-
+//SubCategory Information:
+productSchema.virtual("subcategory", {
+  ref: "SubCategory",
+  localField: "subCategoryId",
+  foreignField: "_id",
+  justOne: true,
+});
+//Supplier Information:
 productSchema.virtual("supplier", {
   ref: "Supplier",
   localField: "supplierId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+//Employee Information:
+productSchema.virtual("createdby", {
+  ref: "Employee",
+  localField: "createdBy",
   foreignField: "_id",
   justOne: true,
 });

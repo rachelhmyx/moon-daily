@@ -7,6 +7,7 @@ const Product = require("./Product");
 const Order = require("./Order");
 const UserSignUp = require("./UserSignUp");
 const Income = require("./Income");
+
 module.exports = {
   UserSignUp,
   Category,

@@ -27,6 +27,8 @@ router.get("/", (req, res) => {
     Product.find()
       .populate("category")
       .populate("supplier")
+      .populate("subcategory")
+      .populate("createdby")
       .then((result) => {
         res.send(result);
       });

@@ -69,7 +69,7 @@ router.get("/number-products", function (req, res, next) {
         pipeline: [
           {
             $match: {
-              $expr: { $eq: ["$$id", "$categoryId"] },
+              $expr: { $eq: ["$$id", "$subCategoryId"] },
             },
           },
         ],
@@ -81,7 +81,7 @@ router.get("/number-products", function (req, res, next) {
     },
   ];
 
-  findDocuments({ aggregate: aggregate }, "categories")
+  findDocuments({ aggregate: aggregate }, "subcategories")
     .then((result) => {
       res.json(result);
     })

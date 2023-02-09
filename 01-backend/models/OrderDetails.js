@@ -3,26 +3,14 @@ const { Schema, model } = mongoose;
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const orderDetailsSchema = new Schema({
-  orderId: {
-    type: Schema.Types.ObjectId,
-    ref: "Order",
-    required: true,
-  },
   productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
   quantity: { type: Number, default: 0, min: 0, required: true },
   price: { type: Number, default: 0, min: 0, required: true },
   discount: { type: Number, default: 0, max: 80 },
 });
 
-orderDetailsSchema.virtual("total").get(function () {
+orderDetailsSchema.virtual("totalAmount").get(function () {
   return this.quantity * ((this.price * (100 - this.discount)) / 100);
-});
-
-orderDetailsSchema.virtual("order", {
-  ref: "Order",
-  localField: "orderId",
-  foreignField: "_id",
-  justOne: true,
 });
 
 orderDetailsSchema.virtual("product", {

@@ -10,7 +10,7 @@ const orderDetailsSchema = new Schema({
   discount: { type: Number, default: 0, max: 80 },
 });
 
-orderDetailsSchema.virtual("total").get(function () {
+orderDetailsSchema.virtual("totalAmount").get(function () {
   return this.quantity * ((this.price * (100 - this.discount)) / 100);
 });
 
@@ -26,57 +26,54 @@ orderDetailsSchema.set("toJSON", { virtuals: true });
 
 //------------------Order-----------------------//
 const orderSchema = new Schema({
-  createdDate: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  shippedDate: {
-    type: Date,
-    required: true,
+  orderId: { type: String, required: true, maxLength: 100 },
+  customerId: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
+  employeeId: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
+  orderDate: { type: Date, required: true },
+  paymentMethod: {
+    type: String,
     validate: {
       validator: function (value) {
-        if (!value) {
-          return true;
-        }
-        if (value < this.createdDate) {
-          return false;
-        }
-        return true;
+        return ["CASH", "CREDIT CARD", "PAYPAL", "VISA"].includes(
+          value.toUpperCase()
+        );
       },
-      message: `Shipped Date: {VALUE} is invalid date!`,
+      message: `Payment Method: {VALUE} is invalid payment method!`,
     },
+    required: true,
   },
-  status: {
+  deliveryStatus: {
     type: String,
     default: "WAITING",
     validate: {
       validator: function (value) {
-        return ["WAITING", "COMPLETED", "CANCELED"].includes(
-          value.toUpperCase()
-        );
+        return [
+          "PICKUP",
+          "INPROGRESS",
+          "DELIVERED",
+          "RETURNS",
+          "PENDING",
+          "CANCELLED",
+        ].includes(value.toUpperCase());
       },
       message: `Status: {VALUE} is invalid status!`,
     },
     required: true,
   },
-  description: {
-    type: String,
-    maxLength: 500,
-  },
-  shippingAddress: { type: String, maxLength: 50 },
-  paymentType: {
-    type: String,
-    validate: {
-      validator: function (value) {
-        return ["CASH", "CREDIT CARD"].includes(value.toUpperCase());
-      },
-      message: `Payment Type: {VALUE} is invalid payment type!`,
-    },
+  contactInformation: {
+    type: Object,
     required: true,
   },
-  customerId: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
-  employeeId: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
+
+  shippingInformation: { type: Object, required: true },
+  paymentInformation: { type: Object, required: true },
+
+  createdDate: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+
   orderDetails: [orderDetailsSchema],
 });
 

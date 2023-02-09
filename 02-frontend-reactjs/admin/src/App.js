@@ -1,6 +1,4 @@
 import "./App.css";
-import numeral from "numeral";
-import "numeral/locales/vi";
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FaCloudMoon } from "react-icons/fa";
@@ -9,9 +7,12 @@ import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Categories from "./pages/Categories";
+import SearchBar from "./components/SearchBar";
 import { Layout } from "antd";
 import SideMenuBar from "./components/SideMenuBar";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import numeral from "numeral";
+import "numeral/locales/vi";
 
 numeral.locale("vi");
 
@@ -28,11 +29,11 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
         <Layout>
-          <Sider trigger={null} collapsible collapsed={collapsed}>
+          <Sider trigger={null} collapsible collapsed={collapsed} theme="dark">
             <div className="logo">
               <h2 className="text-white fs-10 text-center text-uppercase fw-bold py-3 mb-0">
                 <span className="sm-logo">{<FaCloudMoon />}</span>
-                <span className="lg-logo">Moon Daily</span>
+                <span className="lg-logo">Moon</span>
               </h2>
             </div>
             <SideMenuBar />
@@ -52,6 +53,7 @@ function App() {
                   onClick: () => setCollapsed(!collapsed),
                 }
               )}
+              <SearchBar />
             </Header>
             <Content
               className="site-layout-background"
