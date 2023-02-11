@@ -19,6 +19,7 @@ var employeesRouter = require("./routes/employees");
 var productsRouter = require("./routes/products");
 var suppliersRouter = require("./routes/suppliers");
 var ordersRouter = require("./routes/orders");
+var uploadRouter = require("./routes/upload");
 var incomeRouter = require("./routes/income");
 
 var cors = require("cors");
@@ -76,6 +77,7 @@ app.use("/employees", employeesRouter);
 app.use("/products", productsRouter);
 app.use("/suppliers", suppliersRouter);
 app.use("/orders", ordersRouter);
+app.use("/upload", uploadRouter);
 app.use("/income", incomeRouter);
 
 // catch 404 and forward to error handler

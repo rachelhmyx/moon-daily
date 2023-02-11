@@ -13,6 +13,7 @@ import SideMenuBar from "./components/SideMenuBar";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import numeral from "numeral";
 import "numeral/locales/vi";
+import Product from "./pages/Products/product";
 
 numeral.locale("vi");
 
@@ -38,7 +39,6 @@ function App() {
             </div>
             <SideMenuBar />
           </Sider>
-
           <Layout className="site-layout">
             <Header
               className="site-layout-background d-flex justify-content-between ps-1 pe-5"
@@ -66,7 +66,7 @@ function App() {
               <Routes>
                 <Route index path="/home" element={<Dashboard />} />
                 <Route path="/categories" element={<Categories />} />
-
+                <Route path="/product" element={<Product />} />
                 {/* NO MATCH ROUTE */}
                 <Route
                   path="*"
