@@ -5,12 +5,12 @@ const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const categorySchema = new Schema({
   name: { type: String, required: true },
   description: { type: String },
-  active: { type: Boolean, required: true },
-  isDeleted: { type: Boolean, required: true },
-  createdDate: { type: Date, required: true, default: Date.now },
-  createdBy: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
-  updatedDate: { type: Date, required: true, default: Date.now },
-  updatedBy: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
+  active: { type: Boolean },
+  isDeleted: { type: Boolean },
+  createdDate: { type: Date, default: Date.now },
+  createdBy: { type: Schema.Types.ObjectId, ref: "Employee" },
+  updatedDate: { type: Date, default: Date.now },
+  updatedBy: { type: Schema.Types.ObjectId, ref: "Employee" },
   sortOrder: { type: Number, required: false },
 });
 

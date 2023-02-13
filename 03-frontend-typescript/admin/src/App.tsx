@@ -2,18 +2,18 @@ import "./App.css";
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FaCloudMoon } from "react-icons/fa";
-import Login from "./pages/Login";
-import ResetPassword from "./pages/ResetPassword";
-import ForgotPassword from "./pages/ForgotPassword";
-import Dashboard from "./pages/Dashboard";
-import Categories from "./pages/Categories";
-import SearchBar from "./components/SearchBar";
+// import Login from "./pages/Login";
+// import ResetPassword from "./pages/ResetPassword";
+// import ForgotPassword from "./pages/ForgotPassword";
+// import Dashboard from "./pages/Dashboard";
+// import Categories from "./pages/Categories";
+// import SearchBar from "./components/SearchBar";
 import { Layout } from "antd";
 import SideMenuBar from "./components/SideMenuBar";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import Product from "./pages/Products/index";
 import numeral from "numeral";
 import "numeral/locales/vi";
-import Product from "./pages/Products/product";
 
 numeral.locale("vi");
 
@@ -24,11 +24,11 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Routes>
+        {/* <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-        </Routes>
+        </Routes> */}
         <Layout>
           <Sider trigger={null} collapsible collapsed={collapsed} theme="dark">
             <div className="logo">
@@ -53,7 +53,6 @@ function App() {
                   onClick: () => setCollapsed(!collapsed),
                 }
               )}
-              <SearchBar />
             </Header>
             <Content
               className="site-layout-background"
@@ -64,9 +63,9 @@ function App() {
               }}
             >
               <Routes>
-                <Route index path="/home" element={<Dashboard />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/product" element={<Product />} />
+                {/* <Route index path="/home" element={<Dashboard />} />
+                <Route path="/categories" element={<Categories />} /> */}
+                <Route path="/products" element={<Product />} />
                 {/* NO MATCH ROUTE */}
                 <Route
                   path="*"

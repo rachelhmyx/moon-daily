@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const employeeSchema = new Schema({
   firstName: { type: String, maxLength: 50 },
@@ -44,6 +45,15 @@ const employeeSchema = new Schema({
     required: false,
   },
 });
+
+employeeSchema.virtual("fullName").get(function () {
+  return this.firstName + " " + this.lastName;
+});
+
+employeeSchema.set("toObject", { virtuals: true });
+employeeSchema.set("toJSON", { virtuals: true });
+
+employeeSchema.plugin(mongooseLeanVirtuals);
 
 const Employee = model("Employee", employeeSchema);
 module.exports = Employee;

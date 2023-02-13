@@ -30,10 +30,10 @@ function Categories() {
       width: "40%",
     },
     {
-      title: "",
+      title: "Actions",
       key: "actions",
       width: "5%",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <Space>
             <Popconfirm
@@ -107,6 +107,7 @@ function Categories() {
         createForm.resetFields();
       })
       .catch((err) => {
+        message.error("Add New Failed!");
         console.log("🧨", err);
       });
   };
@@ -174,7 +175,7 @@ function Categories() {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="on"
+          autoComplete="off"
         >
           <Form.Item
             label="Name"

@@ -1,53 +1,68 @@
 import React from "react";
-import { axiosClient } from "../../libraries/axiosClient";
-import { API_URL } from "../../constants/URLS";
-import  { ProColumns } from '@ant-design/pro-components';
 import {
   Table,
-  Button,
   Form,
+  Button,
+  InputNumber,
   Input,
   message,
+  Space,
   Popconfirm,
   Modal,
-  Space,
-  InputNumber,
-  Upload,
+  Select,
+  DatePicker
 } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
-  UploadOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
+import { axiosClient } from "../../libraries/axiosClient";
 import numeral from "numeral";
-import axios from "axios";
+import moment from "moment";
+import { API_URL } from "../../constants/URLS";
+
 
 function Products() {
-  //Set State:
+  //set useState:
   const [products, setProducts] = React.useState([]);
+  const [categories, setCategories] = React.useState([]);
+  const [subCategories, setSubCategories] = React.useState([]);
+  const [suppliers, setSuppliers] = React.useState([]);
+  const [employees, setEmployees] = React.useState([]);
   const [refresh, setRefresh] = React.useState(0);
-  const [editFormVisible, setEditFormVisible] = React.useState(false);
   const [selectedRecord, setSelectedRecord] = React.useState(null);
+  const [isVisibleEditForm, setIsVisibleEditForm] = React.useState(false);
+  const [isVisibleAddNewForm, setIsVisibleAddNewForm] = React.useState(false);
+  
 
-  //Khai báo column:
-
-  const productsColumns: ProColumns[] = [
+  const productColumns = [
     {
-      title: "Name",
-      key: "name",
-      dataIndex: "name",
-      copyable: true,
-      ellipsis: true,
+      title: "Product",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
       render: (text) => {
-        return <strong>{text}</strong>;
+        return <div>{text && <img src={`${API_URL}${text}`} style={{width:60}} alt=""/>}</div>;
       },
     },
     {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
       render: (text) => {
-        return <span>{numeral(text).format("0,0")}</span>;
+        return <span style={{"fontSize": "18px"}}>{text}</span>;
+      },
+    },
+    {
+      title: "Original Price",
+      dataIndex: "price",
+      key: "price",
+      render: (text) => {
+        return (
+          <strong style={{"fontSize": "18px"}}>
+            {numeral(text).format("0,0$")}
+          </strong>
+        );
       },
     },
     {
@@ -63,63 +78,65 @@ function Products() {
       },
     },
     {
-      title: "Total Price",
-      key: "total",
+      title: "Price After Discount",
       dataIndex: "total",
+      key: "total",
       render: (text) => {
         return (
-          <strong style={{ color: "green" }}>
+          <strong style={{ color: "green", fontSize: "18px" }}>
             {numeral(text).format("0,0$")}
           </strong>
         );
       },
     },
     {
-      title: "创建时间",
-      key: "createdDate",
-      dataIndex: "createdDate",
-      valueType: "date",
-      sorter: true,
-      hideInSearch: true,
-    },
-    {
-      title: "创建时间",
-      dataIndex: "createdDate",
-      valueType: "dateRange",
-      hideInTable: true,
-      search: {
-        transform: (value) => {
-          return {
-            startTime: value[0],
-            endTime: value[1],
-          };
-        },
+      title: "Sold",
+      dataIndex: "sold",
+      key: "sold",
+      render: (text) => {
+        return <span>{numeral(text).format("0,0")}</span>;
       },
     },
     {
-      title: "",
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      render: (text) => {
+        return <span>{numeral(text).format("0,0")}</span>;
+      },
+    },
+    {
+      title: "Created Date",
+      dataIndex: "createdDate",
+      key: "createdDate",
+      render: (text) => {
+        return <span>{moment(text).format("DD/MM/yyyy")}</span>;
+      },
+    },
+    {
+      title: "Actions",
       key: "actions",
-      width: "5%",
-      render: (text, record) => {
+      render: (record) => {
         return (
           <Space>
             <Popconfirm
               title="Are you sure to delete this row?"
               onConfirm={() => {
-                //Delete:
+                //Xóa data:
                 const id = record._id;
                 axiosClient
                   .delete("/products/" + id)
                   .then((response) => {
-                    message.success("Delete Successful!");
+                    message.success("Deleted successfully!");
                     setRefresh((f) => {
                       return f + 1;
                     });
                   })
-                  .catch((err) => {
-                    message.error("Delete Failed!");
+                  .catch((error) => {
+                    message.error("Deleted failed!");
+                    console.log("Error:", error);
                   });
-                console.log("Delete", record);
+                console.log("Delete:", record);
               }}
               onCancel={() => {}}
               okText="Yes"
@@ -127,186 +144,294 @@ function Products() {
             >
               <Button type="dashed" danger icon={<DeleteOutlined />}></Button>
             </Popconfirm>
-
             <Button
               type="dashed"
               icon={<EditOutlined />}
               onClick={() => {
-                setEditFormVisible(true);
-                console.log("Selected Record", record);
                 setSelectedRecord(record);
+                setIsVisibleEditForm(true);
                 updateForm.setFieldsValue(record);
+                console.log("Selected record:", record);
               }}
             ></Button>
-
-            <Upload
-              showUploadList={false}
-              name="file"
-              action={API_URL + "/upload/products/" + record._id}
-              headers={{ authorization: "authorization-text" }}
-              onChange={(info) => {
-                if (info.file.status !== "uploading") {
-                  console.log(info.file, info.fileList);
-                }
-
-                if (info.file.status === "done") {
-                  message.success(
-                    `${info.file.name} file uploaded successfully`
-                  );
-                  setRefresh((f) => f + 1);
-                } else if (info.file.status === "error") {
-                  message.error(`${info.file.name} file upload failed.`);
-                }
-              }}
-            >
-              <Button icon={<UploadOutlined />} />
-            </Upload>
           </Space>
         );
       },
     },
   ];
+
+  //set useEffect:
   React.useEffect(() => {
     axiosClient.get("/products").then((response) => {
       setProducts(response.data);
       console.log(response.data);
     });
-  }, [refresh]); //useEffect(mounting) kiểu dependencies có value: sẽ chạy lại khi refresh thay đổi, gắn thêm component con vào component cha, thêm mới data vào bảng mà ko cần phải load lại trang. Sẽ thực hiện GET lại data.
+  }, [refresh]);
+
+  React.useEffect(() => {
+    axiosClient.get("/categories").then((response) => {
+      setCategories(response.data);
+    });
+  }, []);
+  React.useEffect(() => {
+    axiosClient.get("/sub-categories").then((response) => {
+      setSubCategories(response.data);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    axiosClient.get("/suppliers").then((response) => {
+      setSuppliers(response.data);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    axiosClient.get("/employees").then((response) => {
+      setEmployees(response.data)
+    })
+  }, [])
+
+  //Thêm mới data:
   const onFinish = (values) => {
     axiosClient
-      .post("/products", values)
-      .then((response) => {
-        // UPLOAD FILE
-        const { _id } = response.data;
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        axios
-          .post(API_URL + "/upload/products/" + _id, formData)
-          .then((response) => {
-            message.success("Add new successfully!");
-            createForm.resetFields();
-            setRefresh((f) => f + 1);
-          })
-          .catch((err) => {
-            message.error("Uploaded failed!");
-          });
-      })
-      .catch((err) => {
+    .post("/products", values)
+    .then((response) => {
+      setRefresh((f) => {
+        return f + 1;
+      });
+      message.success("Add New Successful");
+      createForm.resetFields();
+    }).catch((error) => {
         message.error("Add New Failed!");
-        console.log(err);
+        console.log(error);
       });
   };
-
-  const onFinishFailed = (errors) => {
-    console.log("🧨", errors);
+  const onFinishFailed = (err) => {
+    console.log("Error:", err);
   };
 
+  //Chỉnh sửa data:
   const onUpdateFinish = (values) => {
     axiosClient
       .patch("/products/" + selectedRecord._id, values)
       .then((response) => {
-        message.success("Updated Successful!");
+        message.success("Updated successfully!");
+        setRefresh((f) => {
+          return f + 1;
+        });
         updateForm.resetFields();
-        setRefresh((f) => f + 1);
-        setEditFormVisible(false);
+        setIsVisibleEditForm(false);
       })
-      .catch((err) => {
-        message.error("Updated Failed!");
-        console.log("🧨", err);
+      .catch((error) => {
+        message.error("Updated failed!");
+        console.log("Error:", error);
       });
   };
-  const onUpdateFinishFailed = (errors) => {
-    console.log("🧨", errors);
+  const onUpdateFinishFailed = (err) => {
+    console.log("Error:", err);
   };
 
+  //Date Picker:
+  const onChange = (date, dateString) => {
+    console.log(date, dateString)
+  }
   const [createForm] = Form.useForm();
   const [updateForm] = Form.useForm();
 
   return (
-    <div>
-      <Form
-        form={createForm}
-        name="create-new-form"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish} //Khi submit đc form thành công
-        onFinishFailed={onFinishFailed} //Khi validate bị lỗi, ko submit đc
-        autoComplete="off"
+    <div style={{ padding: "50px" }}>
+      <div className="d-flex justify-content-end my-5">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => {
+            setIsVisibleAddNewForm(true);
+          }}
+          size="large"
+        >
+          Add New Product
+        </Button>
+      </div>
+      <Modal
+        centered
+        title="Add New Product"
+        open={isVisibleAddNewForm}
+        onOk={() => {
+          createForm.submit();
+          setIsVisibleAddNewForm(false);
+        }}
+        onCancel={() => {
+          setIsVisibleAddNewForm(false);
+        }}
+        okText="Submit"
       >
-        <Form.Item
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: "Please input product name!" }]}
+        <Form
+          form={createForm}
+          name="create-form"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="on"
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="Price"
-          name="price"
-          rules={[{ required: true, message: "Please input product price!" }]}
-        >
-          <InputNumber
-            style={{ minWidth: 200 }}
-            // formatter={(value) => {
-            //   return numeral(value).format("0,0$");
-            // }} thầy sẽ nói lại sau
-          />
-        </Form.Item>
-
-        <Form.Item label="Discount" name="discount">
-          <InputNumber style={{ minWidth: 200 }} />
-        </Form.Item>
-
-        <Form.Item label="Stock" name="stock">
-          <InputNumber style={{ minWidth: 200 }} />
-        </Form.Item>
-
-        <Form.Item label="Description" name="description">
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Product Image" name="file">
-          <Upload
-            showUploadList={true}
-            beforeUpload={(file) => {
-              setFile(file);
-              return false;
-            }}
+          <Form.Item
+            label="Category"
+            name="categoryId"
+            rules={[
+              {
+                required: true,
+                message: "Please input category name!",
+              },
+            ]}
           >
-            <Button icon={<UploadOutlined />}>Choose Images</Button>
-          </Upload>
-        </Form.Item>
+            <Select
+              options={
+                categories &&
+                categories.map((c) => {
+                  return {
+                    value: c._id,
+                    label: c.name,
+                  };
+                })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Sub Category"
+            name="subCategoryId"
+            rules={[
+              {
+                required: true,
+                message: "Please input sub-category name!",
+              },
+            ]}
+          >
+            <Select
+              options={
+                subCategories &&
+                subCategories.map((c) => {
+                  return {
+                    value: c._id,
+                    label: c.name,
+                  };
+                })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Supplier"
+            name="supplierId"
+            rules={[
+              {
+                required: true,
+                message: "Please input supplier name!",
+              },
+            ]}
+          >
+            <Select
+              options={
+                suppliers &&
+                suppliers.map((s) => {
+                  return {
+                    value: s._id,
+                    label: s.name,
+                  };
+                })
+              }
+            />
+          </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-      <Table rowKey="_id" dataSource={products} columns={productsColumns} />
+          <Form.Item
+            label="Product Name"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "Please input product name!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Stock"
+            name="stock"
+            rules={[
+              {
+                required: true,
+                message: "Please input product stock!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+          <Form.Item
+            label="Sold"
+            name="sold"
+            rules={[
+              {
+                required: true,
+                message: "Please input number of product has been sold!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+          <Form.Item
+            label="Price"
+            name="price"
+            rules={[
+              {
+                required: true,
+                message: "Please input product price!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+          <Form.Item label="Discount" name="discount">
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+          <Form.Item label="Description" name="description">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Created Date" name="createddate">
+          <DatePicker onChange={onChange} />
+          </Form.Item>
+
+          
+
+        </Form>
+      </Modal>
+
+      <Table rowKey="_id" dataSource={products} columns={productColumns} />
 
       <Modal
         centered
-        open={editFormVisible}
-        title="Update Data"
+        title="Update Product Info"
+        open={isVisibleEditForm}
         onOk={() => {
           updateForm.submit();
         }}
         onCancel={() => {
-          setEditFormVisible(false);
+          setIsVisibleEditForm(false);
         }}
         okText="Save"
       >
         <Form
           form={updateForm}
           name="update-form"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          initialValues={{
+            remember: true,
+          }}
           onFinish={onUpdateFinish}
           onFinishFailed={onUpdateFinishFailed}
           autoComplete="off"
@@ -314,25 +439,106 @@ function Products() {
           <Form.Item
             label="Name"
             name="name"
-            rules={[{ required: true, message: "Please input product name!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input product name!",
+              },
+            ]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            label="Price"
+            label="Original Price"
             name="price"
-            rules={[{ required: true, message: "Please input product price!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input product original price!",
+              },
+            ]}
           >
-            <InputNumber />
+            <InputNumber style={{ minWidth: 200 }} />
           </Form.Item>
 
-          <Form.Item label="Discount" name="discount">
-            <InputNumber />
+          <Form.Item
+            label="Discount"
+            name="discount"
+            rules={[
+              {
+                required: true,
+                message: "Please input product discount!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
           </Form.Item>
 
-          <Form.Item label="Stock" name="stock">
-            <InputNumber />
+          <Form.Item
+            label="Price After Discount"
+            name="total"
+            rules={[
+              {
+                required: true,
+                message: "Please input product price after discount!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Sold"
+            name="sold"
+            rules={[
+              {
+                required: true,
+                message: "Please input number of product has been sold!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Stock"
+            name="stock"
+            rules={[
+              {
+                required: true,
+                message: "Please input product stock!",
+              },
+            ]}
+          >
+            <InputNumber style={{ minWidth: 200 }} />
+          </Form.Item>
+
+          <Form.Item label="Updated Date" name="createddate">
+          <DatePicker onChange={onChange} />
+          </Form.Item>
+
+          <Form.Item
+            label="Updated By"
+            name="employeeId"
+            rules={[
+              {
+                required: true,
+                message: "Please input employee name!",
+              },
+            ]}
+          >
+            <Select
+              options={
+                employees &&
+                employees.map((e) => {
+                  return {
+                    value: e._id,
+                    label: e.fullName,
+                  };
+                })
+              }
+            />
           </Form.Item>
         </Form>
       </Modal>
