@@ -22,7 +22,6 @@ const productSchema = new Schema({
     type: Number,
     default: 0,
     min: 0,
-    required: true,
   },
   description: { type: String, required: false },
   categoryId: { type: Schema.Types.ObjectId, ref: "Category", required: true },
@@ -38,6 +37,8 @@ const productSchema = new Schema({
   promotionPosition: { type: Array, required: false },
   createdDate: { type: Date },
   createdBy: { type: Schema.Types.ObjectId, ref: "Employee" },
+  updatedDate: { type: Date },
+  updatedBy: { type: Schema.Types.ObjectId, ref: "Employee" },
   hotItem: { type: Boolean, required: false },
   newArrival: { type: Boolean, required: false },
   size: { type: Array, required: false },
@@ -81,6 +82,12 @@ productSchema.virtual("supplier", {
 productSchema.virtual("createdby", {
   ref: "Employee",
   localField: "createdBy",
+  foreignField: "_id",
+  justOne: true,
+});
+productSchema.virtual("updatedby", {
+  ref: "Employee",
+  localField: "updatedBy",
   foreignField: "_id",
   justOne: true,
 });

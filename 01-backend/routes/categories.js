@@ -91,4 +91,43 @@ router.get("/number-products", function (req, res, next) {
 });
 
 //Hiển thị tên hàng hóa trong mỗi danh mục:
+router.post("/search/product", function (req, res) {
+  try {
+    const { name } = req.body;
+    const query = {
+      name: name,
+    };
+    Category.aggregate([
+      { query },
+      {
+        $lookup: {
+          from: "products",
+          let: { id: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$$id", "$categoryId"] },
+              },
+            },
+          ],
+          as: "products", //<output array field>
+        },
+      },
+      {
+        $unwind: {
+          path: "$products",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ])
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  } catch (error) {
+    res.sendStatus(500).json(error);
+  }
+});
 module.exports = router;

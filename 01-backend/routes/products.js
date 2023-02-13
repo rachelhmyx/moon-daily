@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const { Product } = require("../models");
+const { Product, Category } = require("../models");
 var express = require("express");
 var router = express.Router();
 
@@ -29,6 +29,7 @@ router.get("/", (req, res) => {
       .populate("supplier")
       .populate("subcategory")
       .populate("createdby")
+      .populate("updatedby")
       .then((result) => {
         res.send(result);
       });

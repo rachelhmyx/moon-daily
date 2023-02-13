@@ -31,6 +31,11 @@ function SideMenuBar() {
             label: "Products",
           },
           {
+            key: "product/details",
+            icon: <RiShoppingCartFill className="fs-4" />,
+            label: "Product Details",
+          },
+          {
             key: "categories",
             icon: <HiClipboardDocumentList className="fs-4" />,
             label: "Category",

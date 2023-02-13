@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   Form,
@@ -10,20 +11,24 @@ import {
   Popconfirm,
   Modal,
   Select,
-  DatePicker
+  Upload,
+  Tooltip,
 } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
+  UploadOutlined,
+  EllipsisOutlined,
 } from "@ant-design/icons";
 import { axiosClient } from "../../libraries/axiosClient";
 import numeral from "numeral";
-import moment from "moment";
 import { API_URL } from "../../constants/URLS";
-
+import axios from "axios";
+import { Category } from "../../meta/Category";
 
 function Products() {
+  const navigate = useNavigate();
   //set useState:
   const [products, setProducts] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
@@ -34,15 +39,23 @@ function Products() {
   const [selectedRecord, setSelectedRecord] = React.useState(null);
   const [isVisibleEditForm, setIsVisibleEditForm] = React.useState(false);
   const [isVisibleAddNewForm, setIsVisibleAddNewForm] = React.useState(false);
-  
+  const [file, setFile] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [selectedProducts, setSelectedProducts] = React.useState(null);
 
   const productColumns = [
     {
-      title: "Product",
+      title: "Image",
       dataIndex: "imageUrl",
       key: "imageUrl",
       render: (text) => {
-        return <div>{text && <img src={`${API_URL}${text}`} style={{width:60}} alt=""/>}</div>;
+        return (
+          <div>
+            {text && (
+              <img src={`${API_URL}${text}`} style={{ width: 60 }} alt="" />
+            )}
+          </div>
+        );
       },
     },
     {
@@ -50,7 +63,7 @@ function Products() {
       dataIndex: "name",
       key: "name",
       render: (text) => {
-        return <span style={{"fontSize": "18px"}}>{text}</span>;
+        return <span style={{ fontSize: "18px" }}>{text}</span>;
       },
     },
     {
@@ -59,7 +72,7 @@ function Products() {
       key: "price",
       render: (text) => {
         return (
-          <strong style={{"fontSize": "18px"}}>
+          <strong style={{ fontSize: "18px" }}>
             {numeral(text).format("0,0$")}
           </strong>
         );
@@ -106,14 +119,6 @@ function Products() {
       },
     },
     {
-      title: "Created Date",
-      dataIndex: "createdDate",
-      key: "createdDate",
-      render: (text) => {
-        return <span>{moment(text).format("DD/MM/yyyy")}</span>;
-      },
-    },
-    {
       title: "Actions",
       key: "actions",
       render: (record) => {
@@ -154,6 +159,17 @@ function Products() {
                 console.log("Selected record:", record);
               }}
             ></Button>
+
+      {/* Chuyển hướng sang Product Details */}
+
+            <Tooltip placement="topLeft" title="See Details" arrowPointAtCenter>
+              <Button type="dashed" icon={<EllipsisOutlined /> } 
+              onClick={() => {
+                navigate("/product/details");
+                
+              }}
+              ></Button>
+            </Tooltip>
           </Space>
         );
       },
@@ -187,30 +203,43 @@ function Products() {
 
   React.useEffect(() => {
     axiosClient.get("/employees").then((response) => {
-      setEmployees(response.data)
-    })
-  }, [])
+      setEmployees(response.data);
+    });
+  }, []);
 
-  //Thêm mới data:
+  //Add new data:
   const onFinish = (values) => {
     axiosClient
-    .post("/products", values)
-    .then((response) => {
-      setRefresh((f) => {
-        return f + 1;
-      });
-      message.success("Add New Successful");
-      createForm.resetFields();
-    }).catch((error) => {
+      .post("/products", values)
+      .then((response) => {
+        // UPLOAD FILE
+        const { _id } = response.data;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        axios
+          .post(API_URL + "/upload/products/" + _id, formData)
+          .then((response) => {
+            message.success("Add new successfully!");
+            createForm.resetFields();
+            setRefresh((f) => f + 1);
+          })
+          .catch((err) => {
+            message.error("Uploaded failed!");
+          });
+      })
+      .catch((error) => {
         message.error("Add New Failed!");
         console.log(error);
       });
   };
+
   const onFinishFailed = (err) => {
     console.log("Error:", err);
   };
 
-  //Chỉnh sửa data:
+  //Update data:
   const onUpdateFinish = (values) => {
     axiosClient
       .patch("/products/" + selectedRecord._id, values)
@@ -231,15 +260,54 @@ function Products() {
     console.log("Error:", err);
   };
 
-  //Date Picker:
-  const onChange = (date, dateString) => {
-    console.log(date, dateString)
-  }
+  //Search data:
+  const onSearchFinish = (values) => {
+    setLoading(true);
+    axiosClient
+      .post("/categories/search/products", values)
+      .then((response) => {
+        // console.log(response.data);
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        message.error("Errors!");
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  const onSearchFinishFailed = (errors) => {
+    console.log("🐣", errors);
+  };
+
   const [createForm] = Form.useForm();
   const [updateForm] = Form.useForm();
+  const [searchForm] = Form.useForm();
 
   return (
     <div style={{ padding: "50px" }}>
+      <Form
+        form={searchForm}
+        name="search-form"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ status: "Choose Category" }}
+        onFinish={onSearchFinish}
+        onFinishFailed={onSearchFinishFailed}
+        autoComplete="on"
+      >
+        <Form.Item label="Category" name="category">
+          <Select options={Category} />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {loading ? "Loading" : "Sorting"}
+          </Button>
+        </Form.Item>
+      </Form>
+
       <div className="d-flex justify-content-end my-5">
         <Button
           type="primary"
@@ -367,16 +435,7 @@ function Products() {
           >
             <InputNumber style={{ minWidth: 200 }} />
           </Form.Item>
-          <Form.Item
-            label="Sold"
-            name="sold"
-            rules={[
-              {
-                required: true,
-                message: "Please input number of product has been sold!",
-              },
-            ]}
-          >
+          <Form.Item label="Sold" name="sold">
             <InputNumber style={{ minWidth: 200 }} />
           </Form.Item>
           <Form.Item
@@ -398,11 +457,20 @@ function Products() {
             <Input />
           </Form.Item>
           <Form.Item label="Created Date" name="createddate">
-          <DatePicker onChange={onChange} />
+            <Input />
           </Form.Item>
 
-          
-
+          <Form.Item label="Product Image" name="file">
+            <Upload
+              showUploadList={true}
+              beforeUpload={(file) => {
+                setFile(file);
+                return false;
+              }}
+            >
+              <Button icon={<UploadOutlined />}>Choose Images</Button>
+            </Upload>
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -475,29 +543,7 @@ function Products() {
             <InputNumber style={{ minWidth: 200 }} />
           </Form.Item>
 
-          <Form.Item
-            label="Price After Discount"
-            name="total"
-            rules={[
-              {
-                required: true,
-                message: "Please input product price after discount!",
-              },
-            ]}
-          >
-            <InputNumber style={{ minWidth: 200 }} />
-          </Form.Item>
-
-          <Form.Item
-            label="Sold"
-            name="sold"
-            rules={[
-              {
-                required: true,
-                message: "Please input number of product has been sold!",
-              },
-            ]}
-          >
+          <Form.Item label="Sold" name="sold">
             <InputNumber style={{ minWidth: 200 }} />
           </Form.Item>
 
@@ -515,7 +561,7 @@ function Products() {
           </Form.Item>
 
           <Form.Item label="Updated Date" name="createddate">
-          <DatePicker onChange={onChange} />
+            <Input />
           </Form.Item>
 
           <Form.Item
