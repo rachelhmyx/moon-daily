@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Table,
   Form,
@@ -13,6 +12,8 @@ import {
   Select,
   Upload,
   Tooltip,
+  Descriptions,
+  Image,
 } from "antd";
 import {
   DeleteOutlined,
@@ -28,7 +29,6 @@ import axios from "axios";
 import { Category } from "../../meta/Category";
 
 function Products() {
-  const navigate = useNavigate();
   //set useState:
   const [products, setProducts] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
@@ -42,6 +42,7 @@ function Products() {
   const [file, setFile] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [selectedProducts, setSelectedProducts] = React.useState(null);
+  const [isPreview, setIsPreview] = React.useState(false);
 
   const productColumns = [
     {
@@ -160,14 +161,16 @@ function Products() {
               }}
             ></Button>
 
-      {/* Chuyển hướng sang Product Details */}
+            {/* Chuyển hướng sang Product Details */}
 
             <Tooltip placement="topLeft" title="See Details" arrowPointAtCenter>
-              <Button type="dashed" icon={<EllipsisOutlined /> } 
-              onClick={() => {
-                navigate("/product/details");
-                
-              }}
+              <Button
+                type="dashed"
+                icon={<EllipsisOutlined />}
+                onClick={() => {
+                  console.log("record:", record.supplier.name);
+                  setSelectedProducts(record);
+                }}
               ></Button>
             </Tooltip>
           </Space>
@@ -587,6 +590,91 @@ function Products() {
             />
           </Form.Item>
         </Form>
+      </Modal>
+
+      {/* See Product Details Info */}
+      <Modal
+        title="Products In Details"
+        centered
+        open={selectedProducts}
+        onCancel={() => {
+          setSelectedProducts(null);
+        }}
+        onOk={() => {
+          setSelectedProducts(null);
+        }}
+        width={"90%"}
+      >
+        {selectedProducts && (
+          <div>
+            <Space>
+              <React.Fragment>
+                <Image
+                  onClick={() => {
+                    setIsPreview(true);
+                  }}
+                  preview={{
+                    visible: false,
+                  }}
+                  width={400}
+                  height={400}
+                  src={`${API_URL}${selectedProducts?.imageUrl}`}
+                />
+                <div
+                  style={{
+                    display: "none",
+                  }}
+                >
+                  <Image.PreviewGroup
+                    preview={{
+                      visible: isPreview && selectedProducts._id,
+                      onVisibleChange: (vis) => setIsPreview(vis),
+                    }}
+                  >
+                    <Image src={`${API_URL}${selectedProducts?.imageUrl}`} />
+                    {selectedProducts &&
+                      selectedProducts.images &&
+                      selectedProducts.images.map((image) => {
+                        return <Image key={image} src={`${API_URL}${image}`} />;
+                      })}
+                  </Image.PreviewGroup>
+                </div>
+              </React.Fragment>
+
+              <Descriptions
+                title={selectedProducts.name}
+                bordered
+                column={{
+                  xxl: 4,
+                  xl: 3,
+                  lg: 3,
+                  md: 3,
+                  sm: 2,
+                  xs: 1,
+                }}
+              >
+                <Descriptions.Item label="Supplier">
+                  {selectedProducts?.supplier?.name}
+                </Descriptions.Item>
+                <Descriptions.Item label="Price">
+                  {numeral(selectedProducts?.price).format("0,0$")}
+                </Descriptions.Item>
+                <Descriptions.Item label="Avalable Stock">
+                  {numeral(selectedProducts?.stock).format("0,0")}
+                </Descriptions.Item>
+                <Descriptions.Item label="Sold">
+                  {numeral(selectedProducts?.sold).format("0,0")}
+                </Descriptions.Item>
+                <Descriptions.Item label="Total Revenue">
+                  {numeral(selectedProducts?.totalRevenue).format("0,0$")}
+                </Descriptions.Item>
+                <Descriptions.Item label="Description">
+                  {selectedProducts?.description}
+                </Descriptions.Item>
+              </Descriptions>
+            </Space>
+          </div>
+        )}
       </Modal>
     </div>
   );
