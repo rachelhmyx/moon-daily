@@ -14,6 +14,8 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import numeral from "numeral";
 import "numeral/locales/vi";
 import Products from "./pages/Products/index";
+import Suppliers from "./pages/Suppliers/index";
+import NotFoundPage from "./pages/404/index";
 
 numeral.locale("vi");
 
@@ -67,16 +69,10 @@ function App() {
                 <Route index path="/home" element={<Dashboard />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/suppliers" element={<Suppliers />} />
 
                 {/* NO MATCH ROUTE */}
-                <Route
-                  path="*"
-                  element={
-                    <main style={{ padding: "1rem" }}>
-                      <p>404 Page not found</p>
-                    </main>
-                  }
-                />
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Content>
           </Layout>

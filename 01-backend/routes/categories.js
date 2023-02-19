@@ -77,6 +77,21 @@ router.get("/number-products", function (req, res, next) {
       },
     },
     {
+      $lookup: {
+        from: "subcategories",
+        let: { id: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$$id", "$categoryId"] },
+            },
+          },
+        ],
+        as: "subCategories", //<output array field>
+      },
+    },
+
+    {
       $addFields: { numberOfProducts: { $size: "$products" } }, //Sử dụng $size khi muốn tính số phần tử trong một mảng.
     },
   ];

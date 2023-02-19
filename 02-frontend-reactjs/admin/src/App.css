@@ -91,4 +91,8 @@ main {
   min-height: 100vh;
 }
 
-/* Search Bar Style */
+/* Category */
+.site-card-wrapper {
+  padding: 30px;
+  background: #ececec;
+}

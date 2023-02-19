@@ -32,6 +32,18 @@ router.get("/", (req, res, next) => {
   }
 });
 
+//Get By Id:
+// router.get("/:id", function (req, res, next) {
+//   try {
+//     const { id } = req.params;
+//     SubCategory.findById(id).then((result) => {
+//       res.send(result);
+//     });
+//   } catch (err) {
+//     res.sendStatus(500);
+//   }
+// });
+
 router.delete("/:id", (req, res, next) => {
   try {
     const { id } = req.params;
