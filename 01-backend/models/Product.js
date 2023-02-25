@@ -41,6 +41,7 @@ const productSchema = new Schema({
   updatedBy: { type: Schema.Types.ObjectId, ref: "Employee" },
   hotItem: { type: Boolean, required: false },
   newArrival: { type: Boolean, required: false },
+  dealOfTheDay: { type: Boolean, required: false },
   size: { type: Array, required: false },
   color: { type: Array, required: false },
   features: { type: String, required: false },
