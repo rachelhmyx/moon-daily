@@ -19,7 +19,10 @@ var employeesRouter = require("./routes/employees");
 var productsRouter = require("./routes/products");
 var suppliersRouter = require("./routes/suppliers");
 var ordersRouter = require("./routes/orders");
+var slidesRouter = require("./routes/slides");
+var featuresRouter = require("./routes/features");
 var uploadRouter = require("./routes/upload");
+var advertisementsRouter = require("./routes/advertisements");
 
 var cors = require("cors");
 // const { findDocument } = require("./helpers/MongoDbHelper");
@@ -65,7 +68,6 @@ app.use(
 //     }
 //   })
 // );
-
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/sign-up", signUpUserRouter);
@@ -76,8 +78,10 @@ app.use("/employees", employeesRouter);
 app.use("/products", productsRouter);
 app.use("/suppliers", suppliersRouter);
 app.use("/orders", ordersRouter);
+app.use("/slides", slidesRouter);
+app.use("/features", featuresRouter);
+app.use("/advertisements", advertisementsRouter);
 app.use("/upload", uploadRouter);
-// app.use("/income", incomeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

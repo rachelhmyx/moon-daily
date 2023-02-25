@@ -1,0 +1,42 @@
+.main {
+  /* min-height: 3000px; */
+}
+
+.header {
+  height: 50px;
+}
+
+.header_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: #e3dfdf;
+}
+
+.header_link {
+  padding-right: 20px;
+  color: rgb(3, 104, 3);
+  margin-left: 230px;
+}
+
+.header_link:hover {
+  color: orange;
+}
+
+.header_link1::before {
+  content: "/";
+  margin-right: 20px;
+}
+
+.product_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  justify-content: center;
+  margin: 50px 20px;
+}
+
+.product_price {
+  color: #df5e13;
+}

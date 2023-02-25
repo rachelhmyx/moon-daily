@@ -1,14 +1,13 @@
 const { default: mongoose } = require("mongoose");
-const { Income } = require("../models");
+const { Slide } = require("../models");
 var express = require("express");
 var router = express.Router();
-
 mongoose.connect("mongodb://127.0.0.1:27017/Moon-Daily");
 
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
   try {
     const data = req.body;
-    const newItem = new Income(data);
+    const newItem = new Slide(data);
     newItem.save().then((result) => {
       res.send(result);
     });
@@ -18,9 +17,9 @@ router.post("/", (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   try {
-    Income.find().then((result) => {
+    Slide.find().then((result) => {
       res.send(result);
     });
   } catch (error) {
@@ -29,23 +28,22 @@ router.get("/", (req, res) => {
   }
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
   try {
     const { id } = req.params;
-    Income.findByIdAndDelete(id).then((result) => {
+    Slide.findByIdAndDelete(id).then((result) => {
       res.send(result);
     });
   } catch (error) {
     res.sendStatus(500);
-    console.log("Error:", error);
   }
 });
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id", (req, res, next) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    Income.findByIdAndUpdate(id, data, { new: true })
+    Slide.findByIdAndUpdate(id, data, { new: true })
       .then((result) => {
         res.send(result);
       })

@@ -1,0 +1,89 @@
+.order_container {
+  height: 850px;
+}
+
+.order_header {
+  height: 100px;
+}
+
+.order_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  background-color: #e3dfdf;
+}
+
+.order_link {
+  padding-right: 20px;
+  color: rgb(3, 104, 3);
+  margin-left: 230px;
+}
+
+.order_link:hover {
+  color: orange;
+}
+
+.order_link1::before {
+  content: "/";
+  margin-right: 20px;
+}
+
+.order_heading {
+  text-align: center;
+  color: green;
+  font-style: italic;
+  padding-top: 100px;
+  font-size: 40px;
+}
+
+.order_content {
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  color: green;
+  padding-top: 40px;
+  align-items: center;
+}
+
+.order_name {
+  text-align: center;
+  max-width: 830px;
+}
+
+.order_form {
+  display: flex;
+  justify-content: center;
+  height: 360px;
+  margin-top: 100px;
+}
+
+.form_list {
+  width: 580px;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form_label {
+  font-size: 20px;
+  color: green;
+  font-weight: 600;
+}
+
+.form_button {
+  border: none;
+  background-color: #78cd78;
+  padding: 15px 0;
+  font-size: 20px;
+  margin-top: 15px;
+  border-radius: 4px;
+}
+
+.form_button:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}

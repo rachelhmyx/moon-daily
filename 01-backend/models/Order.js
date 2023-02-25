@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
-//-------------Order Detail---------------//
+//Order Detail: ko phải là một collection riêng biệt mà đc gắn với collection Order
 const orderDetailsSchema = new Schema({
   productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
   quantity: { type: Number, default: 0, min: 0, required: true },
@@ -24,12 +24,15 @@ orderDetailsSchema.virtual("product", {
 orderDetailsSchema.set("toObject", { virtuals: true });
 orderDetailsSchema.set("toJSON", { virtuals: true });
 
-//------------------Order-----------------------//
+//----------------------------------------------------------//
+
 const orderSchema = new Schema({
-  orderId: { type: String, required: true, maxLength: 100 },
-  customerId: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
-  employeeId: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
-  orderDate: { type: Date, required: true },
+  orderID: { type: String },
+  customerName: {
+    type: String,
+    required: true,
+  },
+  orderDate: { type: Date, required: true, default: Date.now },
   paymentMethod: {
     type: String,
     validate: {
@@ -42,6 +45,32 @@ const orderSchema = new Schema({
     },
     required: true,
   },
+  phoneNumber: {
+    type: Number,
+    validate: {
+      validator: function (value) {
+        const phoneNumberRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+        return phoneNumberRegex.test(value);
+      },
+      message: `{VALUE} is invalid phone number!`,
+    },
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    validate: {
+      validator: function (value) {
+        const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        return emailRegex.test(value);
+      },
+      message: `{VALUE} is invalid email!`,
+    },
+    required: true,
+    unique: true,
+  },
+  shippingAddress: { type: String, required: true },
+
   deliveryStatus: {
     type: String,
     default: "WAITING",
@@ -60,28 +89,9 @@ const orderSchema = new Schema({
     },
     required: true,
   },
-  contactInformation: {
-    type: Object,
-    required: true,
-  },
 
-  shippingInformation: { type: Object, required: true },
-  paymentInformation: { type: Object, required: true },
-
-  createdDate: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-
+  employeeId: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
   orderDetails: [orderDetailsSchema],
-});
-
-orderSchema.virtual("customer", {
-  ref: "Customer",
-  localField: "customerId",
-  foreignField: "_id",
-  justOne: true,
 });
 
 orderSchema.virtual("employee", {

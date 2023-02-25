@@ -11,7 +11,7 @@ import {
   Col,
   Row,
   Upload,
-  Avatar
+  Avatar,
 } from "antd";
 import {
   EditOutlined,
@@ -234,13 +234,6 @@ function Suppliers() {
                 <Card
                   bordered={true}
                   hoverable
-                //   cover={
-                //     <img
-                //       alt=""
-                //       src={`${API_URL}${s.imageUrl}`}
-                //       style={{ width: "100%", height: "300px" }}
-                //     />
-                //   }
                   actions={[
                     <EditOutlined
                       key="edit"
@@ -266,8 +259,9 @@ function Suppliers() {
                 >
                   <Meta
                     title={s.name}
-                    // description={`${c.numberOfProducts} products`}
-                    avatar={<Avatar src={`${API_URL}${s.imageUrl}`} size={120} />}
+                    avatar={
+                      <Avatar src={`${API_URL}${s.imageUrl}`} size={120} />
+                    }
                   />
                 </Card>
               </Col>

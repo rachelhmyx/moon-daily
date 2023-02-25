@@ -1,0 +1,80 @@
+.card {
+  margin: 15px 30px;
+  height: 540px;
+}
+
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: green;
+  font-weight: 600;
+  font-size: 25px;
+  text-transform: uppercase;
+}
+
+.card-text {
+  height: 70px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.card-body {
+  background-color: #96f396;
+}
+
+.card-img-top {
+  height: 250px;
+  width: 100%;
+}
+
+.btn-info:hover {
+  transform: scale(1.2);
+  border: 1px solid green;
+}
+
+.btn-success:hover {
+  transform: scale(1.2);
+  border: 1px solid orange;
+}
+
+/* -------------Product Details---------------- */
+.img-item:hover {
+  transform: scale(1.2);
+}
+
+.product_menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product_sold {
+  color: #ef5aef;
+  font-size: 20px;
+}
+
+.button_list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button-heart {
+  color: #e2ff00;
+  background-color: red;
+  font-weight: 700;
+  padding: 10px 30px;
+  border-radius: 8px;
+  border: none;
+}
+
+.button-heart:hover {
+  transform: scale(1.2);
+}
+
+.icon-heart {
+  padding-left: 12px;
+  font-size: 21px;
+}

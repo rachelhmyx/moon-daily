@@ -15,6 +15,7 @@ import numeral from "numeral";
 import "numeral/locales/vi";
 import Products from "./pages/Products/index";
 import Suppliers from "./pages/Suppliers/index";
+import OrderManagement from "./pages/Orders/index";
 import NotFoundPage from "./pages/404/index";
 
 numeral.locale("vi");
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/suppliers" element={<Suppliers />} />
+                <Route path="/orders" element={<OrderManagement />} />
 
                 {/* NO MATCH ROUTE */}
                 <Route path="*" element={<NotFoundPage />} />
