@@ -1,7 +1,6 @@
 import React from "react";
 import { axiosClient } from "../../libraries/axiosClient";
 import {
-  //   Tabs,
   Form,
   Button,
   message,

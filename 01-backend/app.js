@@ -23,6 +23,7 @@ var slidesRouter = require("./routes/slides");
 var featuresRouter = require("./routes/features");
 var uploadRouter = require("./routes/upload");
 var advertisementsRouter = require("./routes/advertisements");
+var viewsRouter = require("./routes/views");
 
 var cors = require("cors");
 // const { findDocument } = require("./helpers/MongoDbHelper");
@@ -82,6 +83,7 @@ app.use("/slides", slidesRouter);
 app.use("/features", featuresRouter);
 app.use("/advertisements", advertisementsRouter);
 app.use("/upload", uploadRouter);
+app.use("/views", viewsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

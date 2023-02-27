@@ -7,6 +7,7 @@ const featureSchema = new Schema({
   sortOrder: { type: Number, required: true },
   active: { type: Boolean, required: true },
   isDeleted: { type: Boolean, required: true },
+  icon: { type: String, required: true },
 });
 
 const Feature = model("Feature", featureSchema);

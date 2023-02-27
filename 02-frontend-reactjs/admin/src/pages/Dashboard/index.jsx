@@ -199,31 +199,42 @@
 
 // export default Dashboard;
 import React from "react";
+import { Area } from "@ant-design/plots";
 import { axiosClient } from "../../libraries/axiosClient";
 import { Card, Col, Row } from "antd";
 
 function Dashboard() {
-  const [products, setProducts] = React.useState([]);
+  const [views, setViews] = React.useState([]);
 
   React.useEffect(() => {
-    axiosClient.get("/products").then((response) => {
-      setProducts(response.data);
+    axiosClient.get("/views").then((response) => {
+      setViews(response.data);
       console.log(response.data);
     });
   }, []);
+
+  const config = {
+    views,
+    xField: "timePeriod",
+    yField: "value",
+    xAxis: {
+      range: [0, 3],
+    },
+    // color: ({ type }) => {
+    //   return "#7828C8";
+    // },
+  };
 
   return (
     <>
       <div className="site-card-wrapper">
         <Row gutter={16}>
           <Col span={8}>
-            <Card title="Total Revenue" bordered={false}>
-              
-            </Card>
+            <Card title="Total Revenue" bordered={false}></Card>
           </Col>
           <Col span={8}>
             <Card title="Views" bordered={false}>
-              Card content
+              
             </Card>
           </Col>
           <Col span={8}>
@@ -232,6 +243,10 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
+
+      </div>
+      <div>
+        {<Area {...config} />}
       </div>
     </>
   );
