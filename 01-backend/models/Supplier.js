@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const supplierSchema = new Schema({
   name: { type: String, required: true, maxLength: 100 },
+  categoryId: { type: Schema.Types.ObjectId, ref: "Category" },
   email: {
     type: String,
     validate: {
@@ -31,5 +33,16 @@ const supplierSchema = new Schema({
   address: { type: String, required: false, maxLength: 500 },
 });
 
+supplierSchema.virtual("category", {
+  ref: "Category",
+  localField: "categoryId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+supplierSchema.set("toObject", { virtuals: true });
+supplierSchema.set("toJSON", { virtuals: true });
+
+supplierSchema.plugin(mongooseLeanVirtuals);
 const Supplier = model("Supplier", supplierSchema);
 module.exports = Supplier;

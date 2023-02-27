@@ -34,7 +34,6 @@ const productSchema = new Schema({
   rating: { type: Number, required: false },
   active: { type: Boolean },
   isDeleted: { type: Boolean },
-  promotionPosition: { type: Array, required: false },
   createdDate: { type: Date },
   createdBy: { type: Schema.Types.ObjectId, ref: "Employee" },
   updatedDate: { type: Date },

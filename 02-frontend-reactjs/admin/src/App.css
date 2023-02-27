@@ -31,6 +31,12 @@ body {
 }
 /* End of layout Style */
 
+/* Dashboard */
+.site-card-wrapper {
+  padding: 30px;
+}
+/* End of Dashboard */
+
 /* Login Form */
 .login-form {
   max-width: 300px;

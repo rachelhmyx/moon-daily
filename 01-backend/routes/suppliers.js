@@ -26,9 +26,11 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
   try {
-    Supplier.find().then((result) => {
-      res.send(result);
-    });
+    Supplier.find()
+      .populate("category")
+      .then((result) => {
+        res.send(result);
+      });
   } catch (error) {
     res.sendStatus(500);
     console.log("Error:", error);

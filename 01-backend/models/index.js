@@ -10,6 +10,7 @@ const UserSignUp = require("./UserSignUp");
 const Slide = require("./Slide");
 const Feature = require("./Feature");
 const Advertisement = require("./Advertisement");
+const View = require("./View");
 
 module.exports = {
   UserSignUp,
@@ -24,4 +25,5 @@ module.exports = {
   Feature,
   Advertisement,
   OrderDetails,
+  View,
 };

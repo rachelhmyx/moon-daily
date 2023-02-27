@@ -32,7 +32,6 @@ router.get("/", (req, res) => {
       .then((result) => {
         res.send(result);
       });
-    sss;
   } catch (error) {
     res.sendStatus(500);
     console.log("Error:", error);

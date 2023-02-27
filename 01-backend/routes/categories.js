@@ -92,7 +92,42 @@ router.get("/number-products", function (req, res, next) {
     },
 
     {
-      $addFields: { numberOfProducts: { $size: "$products" } }, //Sử dụng $size khi muốn tính số phần tử trong một mảng.
+      $addFields: { numberOfProducts: { $size: "$products" } },
+
+      //Sử dụng $size khi muốn tính số phần tử trong một mảng.
+    },
+  ];
+
+  findDocuments({ aggregate: aggregate }, "categories")
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(400).json(error);
+    });
+});
+
+//Hiển thị tất cả danh mục (Categories) với số lượng nhà CUNG CẤP trong mỗi danh mục:
+router.get("/number-suppliers", function (req, res, next) {
+  const aggregate = [
+    {
+      $lookup: {
+        from: "suppliers",
+        let: { id: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$$id", "$categoryId"] },
+            },
+          },
+        ],
+        as: "suppliers", //<output array field>
+      },
+    },
+    {
+      $addFields: { numberOfSuppliers: { $size: "$suppliers" } },
+
+      //Sử dụng $size khi muốn tính số phần tử trong một mảng.
     },
   ];
 

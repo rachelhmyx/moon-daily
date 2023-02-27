@@ -23,7 +23,7 @@ function SideMenuBar() {
           navigate("/" + key);
         }}
         style={{
-          height: "100%",
+          height: "100vh",
           borderRight: 0,
         }}
         items={[
