@@ -66,20 +66,20 @@
 //         return <span>{moment(text).format("DD/MM/yyyy")}</span>;
 //       },
 //     },
-//     // {
-//     //   title: "AMOUNT",
-//     //   dataIndex: "totalAmount",
-//     //   key: "totalAmount",
-//     //   render: (record) => {
-//     //     return (
-//     //       <div
-//     //         style={{ textAlign: "right", color: "green", fontWeight: "bold" }}
-//     //       >
-//     //         {numeral(record?.orderDetails[0]?.totalAmount).format("0,0$")}
-//     //       </div>
-//     //     );
-//     //   },
-//     // },
+    // {
+    //   title: "AMOUNT",
+    //   dataIndex: "totalAmount",
+    //   key: "totalAmount",
+    //   render: (record) => {
+    //     return (
+    //       <div
+    //         style={{ textAlign: "right", color: "green", fontWeight: "bold" }}
+    //       >
+    //         {numeral(record?.orderDetails[0]?.totalAmount).format("0,0$")}
+    //       </div>
+    //     );
+    //   },
+    // },
 //     {
 //       title: "PAYMENT METHOD",
 //       key: "paymentMethod",

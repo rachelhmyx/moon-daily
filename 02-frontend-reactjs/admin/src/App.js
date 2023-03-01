@@ -3,19 +3,19 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FaCloudMoon } from "react-icons/fa";
 import Login from "./pages/Login";
-import ResetPassword from "./pages/ResetPassword";
-import ForgotPassword from "./pages/ForgotPassword";
-import Dashboard from "./pages/Dashboard";
+import ResetPassword from "./pages/ResetPassword/index";
+import ForgotPassword from "./pages/ForgotPassword/index";
+import Dashboard from "./pages/Dashboard/index";
 import Categories from "./pages/Categories/index";
 import { Layout } from "antd";
 import SideMenuBar from "./components/SideMenuBar";
 import numeral from "numeral";
-import "numeral/locales/vi";
+
 import Products from "./pages/Products/index";
 import Suppliers from "./pages/Suppliers/index";
 import OrderManagement from "./pages/Orders/index";
 import NotFoundPage from "./pages/404/index";
-
+import "numeral/locales/vi";
 numeral.locale("vi");
 
 const { Header, Sider, Content, Footer } = Layout;
