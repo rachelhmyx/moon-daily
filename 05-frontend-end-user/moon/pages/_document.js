@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <title>MOON</title>
         <meta name="description" content="FINAL-PROJECT" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
         <link rel="icon" href="/images/shopping-cart.png" />
         <link
           rel="stylesheet"

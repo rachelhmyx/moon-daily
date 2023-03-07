@@ -86,7 +86,7 @@ export default function Cart() {
                             <div className={styles.product_thumbnail}>
                               <img
                                 className="img-thumbnail"
-                                src={`${API_URL}/${item.imageUrl}`}
+                                src={`${API_URL}/${item.images[0]}`}
                                 alt=""
                                 style={{ width: "120px", height: "120px" }}
                               />

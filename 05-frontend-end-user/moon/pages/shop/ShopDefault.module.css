@@ -1,5 +1,5 @@
 .main {
-  height: 3450px;
+  /* height: 3450px; */
 }
 
 .shop_header {
@@ -32,7 +32,7 @@
 
 .shop_container {
   width: 1650px;
-  height: 3400px;
+  /* height: 3400px; */
   margin-left: auto;
   margin-right: auto;
 }
@@ -44,14 +44,14 @@
 
 .shop_brand {
   margin-bottom: 45px;
-  height: 70px;
+  /* height: 70px; */
   display: flex;
   justify-content: space-between;
 }
 
 .shop_categories {
   margin-bottom: 60px;
-  height: 450px;
+  /* height: 450px; */
   display: flex;
   flex-flow: row wrap;
 }
@@ -62,10 +62,11 @@
   height: 50%;
   border: 1px solid #ccc;
   background-color: #96f9ab;
+  min-height: 290px;
 }
 
 .group_menu:hover {
-  border-color: green;
+  border-color: yellow;
 }
 
 .group_right {
@@ -88,15 +89,14 @@
 }
 
 .links_item:hover {
-  color: green;
-}
-
-.layout_shop {
-  height: 580px;
+  color: red;
 }
 
 .layout_product {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  justify-content: center;
+  margin: 50px 20px;
 }
 
 .layout_heading {
@@ -193,6 +193,10 @@
   font-weight: 500;
 }
 
+.menu_list {
+  list-style: none;
+}
+
 .menu_text {
   font-size: 23px;
   margin: 10px;
@@ -209,7 +213,7 @@
   background-color: #f9dd1c;
   font-weight: 700;
   padding: 10px 11px;
-  margin-left: 38px;
+  margin-left: 61px;
   border-radius: 8px;
 }
 

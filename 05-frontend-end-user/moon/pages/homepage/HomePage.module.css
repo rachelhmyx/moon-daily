@@ -1,9 +1,9 @@
 .home_page {
-  height: 5000px;
+  /* height: 5000px; */
 }
 
 .home_banner {
-  height: 650px;
+  /* height: 650px; */
 }
 
 .banner_container {
@@ -74,7 +74,7 @@
 
 .home_deal {
   width: 1650px;
-  height: 570px;
+  /* height: 570px; */
   margin: 80px auto;
 }
 
@@ -115,7 +115,10 @@
 }
 
 .deal_content {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  justify-content: center;
+  margin: 50px 20px;
 }
 
 .deal_thumbnail {
@@ -169,11 +172,12 @@
 }
 
 .home_categories {
-  height: 400px;
+  /* height: 400px; */
   max-width: 1650px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 120px;
+  margin-bottom: 65px;
 }
 
 .categories_header {
@@ -203,7 +207,35 @@
   margin-top: 26px;
 }
 
-/* .categories_title:hover {
+.hot_product {
+  max-width: 1650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hot_heading {
   color: green;
-  cursor: pointer;
-} */
+  text-transform: uppercase;
+  font-size: 30px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+
+.hot_list {
+  display: flex;
+  align-items: center;
+}
+
+.hot_right {
+  margin-left: 20px;
+}
+
+.hot_name {
+  font-size: 22px;
+  color: red;
+  font-weight: 600;
+}
+
+.hot_name a:hover {
+  color: green;
+}

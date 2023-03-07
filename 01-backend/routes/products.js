@@ -72,4 +72,32 @@ router.delete("/:id", (req, res) => {
   }
 });
 
+router.post("/search/products", async (req, res) => {
+  const { name } = req.body;
+  const query = { name: { $regex: new RegExp(name, "i", "+") } };
+  try {
+    Product.find(query).then((result) => {
+      res.send(result);
+    });
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});
+
+router.get("/:id", function (req, res, next) {
+  try {
+    const { id } = req.params;
+    Product.findById(id)
+      .populate("category")
+      .populate("supplier")
+      .populate("subcategory")
+      .populate("createdby")
+      .populate("updatedby")
+      .then((result) => {
+        res.send(result);
+      });
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});
 module.exports = router;

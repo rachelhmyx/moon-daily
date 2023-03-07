@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import styles from "./Register.module.css";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
   const initialState = {
     name: "",
     email: "",
@@ -20,6 +22,13 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(userData);
+    //Lưu dữ liệu vào localStorage:
+    localStorage.setItem("user", JSON.stringify(userData));
+    //Chuyển sang trang login:
+    //Cách 1:
+    window.location.href = "/";
+    //Cách 2:
+    // router.push("/");
   };
 
   return (

@@ -44,6 +44,8 @@ const employeeSchema = new Schema({
     },
     required: false,
   },
+  password: { type: String, required: false },
+  isLocked: { type: Boolean, required: true },
 });
 
 employeeSchema.virtual("fullName").get(function () {

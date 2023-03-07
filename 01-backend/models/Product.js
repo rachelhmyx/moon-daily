@@ -41,10 +41,7 @@ const productSchema = new Schema({
   hotItem: { type: Boolean, required: false },
   newArrival: { type: Boolean, required: false },
   dealOfTheDay: { type: Boolean, required: false },
-  size: { type: Array, required: false },
   color: { type: Array, required: false },
-  features: { type: String, required: false },
-  services: { type: String, required: false },
 });
 
 productSchema.virtual("total").get(function () {

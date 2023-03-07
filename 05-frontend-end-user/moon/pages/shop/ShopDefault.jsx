@@ -20,10 +20,17 @@ import { DataContext } from "../../store/GlobalState";
 import { addToFavourite } from "../../store/Actions";
 import { axiosClient } from "../../libraries/axiosClient";
 
-export default function ShopDefault({ suppliers, products, categories }) {
+export default function ShopDefault({
+  suppliers,
+  products,
+  categories,
+  subCategories,
+}) {
   const [value, setValue] = useState(4);
   const { state, dispatch } = useContext(DataContext);
   const { favourite } = state;
+
+  // console.log("categories", subCategories);
 
   const toggleCarousel = (action) => {
     const { Carousel } = require("bootstrap");
@@ -122,7 +129,7 @@ export default function ShopDefault({ suppliers, products, categories }) {
               </a>
             </div>
           </div>
-          <div className={styles.shop_brand}>
+          {/* <div className={styles.shop_brand}>
             {suppliers &&
               suppliers.map((supplier) => {
                 return (
@@ -135,8 +142,41 @@ export default function ShopDefault({ suppliers, products, categories }) {
                   </a>
                 );
               })}
-          </div>
+          </div> */}
           <div className={styles.shop_categories}>
+            {/* {subCategories &&
+              subCategories.map((category) => {
+                return (
+                  <div className={styles.group_menu} key={category._id}>
+                    <div className={styles.group_left}>
+                      <img
+                        src={`${API_URL}/${category.imageUrl}`}
+                        alt=""
+                        width={100}
+                        height={120}
+                        style={{ padding: "20px 0 0 5px" }}
+                      />
+                    </div>
+                    <div className={styles.group_right}>
+                      <h3 className={styles.group_heading}>{category.name}</h3>
+                      <ul className={styles.group_list}>
+                        {category.products.map((c) => {
+                          return (
+                            <li className={styles.group_item} key={c._id}>
+                              <a
+                                className={styles.links_item}
+                                href="/shop/ShopDefault"
+                              >
+                                {c.name}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })} */}
             <div className={styles.group_menu}>
               <div className={styles.group_left}>
                 <Image
@@ -223,7 +263,7 @@ export default function ShopDefault({ suppliers, products, categories }) {
               </div>
               <div className={styles.group_right}>
                 <h3 className={styles.group_heading}>
-                  Household electrical appliances
+                  Household Electrical Appliances
                 </h3>
                 <ul className={styles.group_list}>
                   <li className={styles.group_item}>
@@ -435,87 +475,95 @@ export default function ShopDefault({ suppliers, products, categories }) {
             <div className={styles.layout_product}>
               {products &&
                 products.map((product) => {
-                  return (
-                    <div
-                      key={product._id}
-                      style={{ height: "500px" }}
-                      className={styles.product_item}
-                    >
+                  if (product.hotItem === true) {
+                    return (
                       <div
-                        className="card"
-                        style={{
-                          width: "18rem",
-                          border: "none",
-                          height: "90%",
-                        }}
+                        key={product._id}
+                        style={{ height: "500px" }}
+                        className={styles.product_item}
                       >
-                        <div className={styles.layout_thumbnail}>
-                          <a href={`products/${product._id}`}>
-                            <img
-                              src={`${API_URL}/${product.images[2]}`}
-                              className="card-img-top"
-                              alt=""
-                              style={{
-                                width: "200px",
-                                height: "200px",
-                                marginLeft: "35px",
-                              }}
-                            />
-                          </a>
-                          <div className={styles.layout_discount}>
-                            - {product.discount} %
-                          </div>
-                        </div>
                         <div
-                          className="card-body"
-                          style={{ backgroundColor: "#fff" }}
+                          className="card"
+                          style={{
+                            width: "20rem",
+                            border: "none",
+                            height: "90%",
+                          }}
                         >
-                          <a
-                            href="/shop/ShopDefault"
-                            className={styles.layout_name}
-                          >
-                            YOUNG SHOP
-                          </a>
-                          <div className={styles.layout_list}>
-                            <p className={styles.layout_item1}>
-                              {numeral(product.total).format("0,0$")}
-                            </p>
-                            <div className={styles.layout_item2}>
-                              {numeral(product.price).format("0,0$")}
+                          <div className={styles.layout_thumbnail}>
+                            <a href={`/products/${product._id}`}>
+                              <img
+                                src={`${API_URL}/${product.imageUrl}`}
+                                className="card-img-top"
+                                alt=""
+                                style={{
+                                  width: "200px",
+                                  height: "200px",
+                                  marginLeft: "35px",
+                                }}
+                              />
+                            </a>
+                            <div className={styles.layout_discount}>
+                              - {product.discount} %
                             </div>
                           </div>
-                          <a
-                            href={`/products/${product._id}`}
-                            className="card-title"
-                            style={{ fontSize: "22px", display: "block" }}
+                          <div
+                            className="card-body"
+                            style={{ backgroundColor: "#fff" }}
                           >
-                            {product.name}
-                          </a>
-                          <Rate
-                            onChange={setValue}
-                            value={value}
-                            className={styles.rate}
-                          />
-                          <p className={styles.layout_sold}>
-                            Sold: {product.sold}
-                          </p>
-                          <button
-                            type="button"
-                            className={styles.layout_button}
-                            onClick={() =>
-                              dispatch(addToFavourite(product, favourite))
-                            }
-                          >
-                            MY FAVOURITE
-                            <i
-                              className="fa-regular fa-heart"
-                              style={{ paddingLeft: "12px", fontSize: "21px" }}
-                            ></i>
-                          </button>
+                            <a
+                              href="/shop/ShopDefault"
+                              className={styles.layout_name}
+                            >
+                              YOUNG SHOP
+                            </a>
+                            <div className={styles.layout_list}>
+                              <p className={styles.layout_item1}>
+                                {numeral(product.total).format("0,0$")}
+                              </p>
+                              <div className={styles.layout_item2}>
+                                {numeral(product.price).format("0,0$")}
+                              </div>
+                            </div>
+                            <a
+                              href={`/products/${product._id}`}
+                              className="card-title"
+                              style={{
+                                fontSize: "22px",
+                                display: "block",
+                              }}
+                            >
+                              {product.name}
+                            </a>
+                            <Rate
+                              onChange={setValue}
+                              value={value}
+                              className={styles.rate}
+                            />
+                            <p className={styles.layout_sold}>
+                              Sold: {product.sold}
+                            </p>
+                            <button
+                              type="button"
+                              className={styles.layout_button}
+                              onClick={() =>
+                                dispatch(addToFavourite(product, favourite))
+                              }
+                            >
+                              MY FAVOURITE
+                              <i
+                                className="fa-regular fa-heart"
+                                style={{
+                                  paddingLeft: "12px",
+                                  fontSize: "21px",
+                                }}
+                              ></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
+                    );
+                  }
                 })}
             </div>
           </div>
@@ -523,8 +571,8 @@ export default function ShopDefault({ suppliers, products, categories }) {
             <div className={styles.menu_left}>
               <div className={styles.menu_heading}>CATEGORIES</div>
               <div className={styles.menu_content}>
-                {categories &&
-                  categories.map((category) => {
+                {/* {subCategories &&
+                  subCategories.map((category) => {
                     return (
                       <div key={category._id} className={styles.menu_text}>
                         <a href={`/categories/${category._id}`}>
@@ -532,19 +580,67 @@ export default function ShopDefault({ suppliers, products, categories }) {
                         </a>
                       </div>
                     );
-                  })}
+                  })} */}
+                <ul className={styles.menu_list}>
+                  <li className={styles.menu_text}>
+                    <a href="/categories/SmartPhoneAccessory">
+                      Smart Phone & Accessory
+                    </a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/categories/ElectronicEquipment">
+                      Electronic Equipment
+                    </a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/categories/HouseholdElectricalAppliances">
+                      Household Electrical Appliances
+                    </a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/categories/MomBabies">Mom & Babies</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/categories/BeautyProducts">Beauty Products</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/categories/FashionAccessory">
+                      Fashion And Accessory
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
             <div className={styles.menu_right}>
               <div className={styles.menu_heading}>BY BRANDS</div>
               <div className={styles.menu_content}>
-                {suppliers.map((supplier) => {
+                {/* {suppliers.map((supplier) => {
                   return (
                     <div key={supplier._id} className={styles.menu_text}>
-                      <a>{supplier.name}</a>
+                      <a href="/suppliers/Suppliers">{supplier.name}</a>
                     </div>
                   );
-                })}
+                })} */}
+                <ul className={styles.menu_list}>
+                  <li className={styles.menu_text}>
+                    <a href="/suppliers/Suppliers">SAMSUNG</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/suppliers/Suppliers">DIOR</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/suppliers/Suppliers">SHARP STORE</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/suppliers/Suppliers">APPLE</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/suppliers/Suppliers">OPPO STORE</a>
+                  </li>
+                  <li className={styles.menu_text}>
+                    <a href="/suppliers/Suppliers">CASIO STORE</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -557,13 +653,18 @@ export default function ShopDefault({ suppliers, products, categories }) {
 export async function getStaticProps(context) {
   const suppliers = await axiosClient.get("/suppliers");
   const products = await axiosClient.get("/products");
-  const categories = await axiosClient.get("/categories/:id/questions/18");
+  const categories = await axiosClient.get("/categories");
+  const subCategories = await axiosClient.get(
+    "/categories/number-products"
+  );
+  // const categories = await axiosClient.get("/categories/question/18");
 
   return {
     props: {
       suppliers,
       products,
       categories,
+      subCategories,
     },
 
     // revalidate: 3600,

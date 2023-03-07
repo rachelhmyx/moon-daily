@@ -4,12 +4,16 @@ import img from "./images/shopping-cart.png";
 import Image from "next/image";
 import Link from "next/link";
 import { DataContext } from "../../store/GlobalState";
+import { axiosClient } from "../../libraries/axiosClient";
 
-export default function Navbar() {
+export default function Navbar({ categories, products, suppliers }) {
+  // console.log("suppliers", suppliers);
+
   //-----------Set giá trị mặc định cho giỏ hàng------------
   const { state, dispatch } = useContext(DataContext);
   const { cart } = state;
   const { favourite } = state;
+
   return (
     <>
       <div className={styles.navbar}>
@@ -20,56 +24,59 @@ export default function Navbar() {
                 <Image
                   src={img}
                   alt=""
-                  width={40}
-                  height={40}
+                  width={50}
+                  height={50}
                   className={styles.image}
                 />
                 <h1 className={styles.heading}>MOON</h1>
               </div>
               <div className={styles.header_center}>
-                <form className={styles.header_form} method="get" action="/">
-                  <div className={styles.form_categories}>
-                    <select className={styles.form_control}>
-                      <option value="All">All</option>
-                      <option value="Smart Phone & Accessory">
-                        Smart Phone & Accessory
-                      </option>
-                      <option value="Electronic equipment">
-                        Electronic Equipment
-                      </option>
-                      <option value="Laptop">Laptop</option>
-                      <option value="Watch">Watch</option>
-                      <option value="Household Electrical Appliances">
-                        Household Electrical Appliances
-                      </option>
-                      <option value="Sport & Travel">Sport & Travel</option>
-                      <option value="Mom & Babies">Mom & Babies</option>
-                      <option value="Home & Lifestyle">Home & Lifestyle</option>
-                      <option value="Beauty Products">Beauty Products</option>
-                      <option value="Healthcare Products">
-                        Healthcare Products
-                      </option>
-                      <option value="Books">Books</option>
-                      <option value="Balo & Bags">Balo & Bags</option>
-                      <option value="Pets Care Products">
-                        Pets Care Products
-                      </option>
-                      <option value="Accessories & Jewelry">
-                        Accessories & Jewelry
-                      </option>
-                    </select>
-                  </div>
-                  <div className={styles.form_center}>
-                    <input
-                      className={styles.form_input}
-                      type="text"
-                      placeholder="I'm shopping for..."
-                    />
-                    <div className={styles.form_button}>
-                      <button className={styles.header_button}>Search</button>
-                    </div>
-                  </div>
-                </form>
+                <div className={styles.menu_icon}>
+                  <a
+                    href="/searchproducts/SearchProducts"
+                    className={styles.header_name}
+                  >
+                    Search Products
+                  </a>
+                  <i
+                    className="fa-solid fa-chevron-down"
+                    style={{
+                      fontSize: "26px",
+                      marginLeft: "auto",
+                      marginRight: "23px",
+                      color: "#726f6f",
+                    }}
+                  ></i>
+                </div>
+
+                <ul className={styles.header_sub}>
+                  <li className={styles.header_sub1}>
+                    <a href="/categories/SmartPhoneAccessory">
+                      Smart Phone & Accessory
+                    </a>
+                  </li>
+                  <li className={styles.header_sub1}>
+                    <a href="/categories/ElectronicEquipment">
+                      Electronic Equipment
+                    </a>
+                  </li>
+                  <li className={styles.header_sub1}>
+                    <a href="/categories/HouseholdElectricalAppliances">
+                      Household Electrical Appliances
+                    </a>
+                  </li>
+                  <li className={styles.header_sub1}>
+                    <a href="/categories/MomBabies">Mom & Babies</a>
+                  </li>
+                  <li className={styles.header_sub1}>
+                    <a href="/categories/BeautyProducts">Beauty Products</a>
+                  </li>
+                  <li className={styles.header_sub1}>
+                    <a href="/categories/FashionAccessory">
+                      Fashion And Accessory
+                    </a>
+                  </li>
+                </ul>
               </div>
               <div className={styles.header_right}>
                 <div className={styles.header_actions}>
@@ -125,6 +132,38 @@ export default function Navbar() {
           <nav className={styles.nav}>
             <div className={styles.nav_container}>
               <div className={styles.nav_left}>
+                {/* <ul className={styles.menu}>
+                  <li className={styles.menu_item}>
+                    <a className={styles.menu_heading} href="/">
+                      HOME
+                      <i
+                        className="fa-solid fa-chevron-down"
+                        style={{ fontSize: "15px", paddingLeft: "10px" }}
+                      ></i>
+                    </a>
+                  </li>
+                  <li className={styles.menu_item}>
+                    <a
+                      className={styles.menu_heading}
+                      href="/categories/Categories"
+                    >
+                      CATEGORIES
+                      <i
+                        className="fa-solid fa-chevron-down"
+                        style={{ fontSize: "15px", paddingLeft: "10px" }}
+                      ></i>
+                    </a>
+                    <ul className={styles.sub_menu}>
+                      {categories &&
+                        categories.map((category) => {
+                          console.log("c", category);
+                          return (
+                            <li key={category._id} className={styles.menu_item}>
+                              <a href="">{category.name}</a>
+                            </li>
+                          );
+                        })}
+                    </ul> */}
                 <ul className={styles.menu}>
                   <li className={styles.menu_item}>
                     <a className={styles.menu_heading} href="/">
@@ -160,8 +199,7 @@ export default function Navbar() {
                         <a href="/">Watch</a>
                       </li>
                       <li className={styles.sub_menu1}>
-                        Household Electrical Appliances
-                        <a href="/"></a>
+                        <a href="/">Household Electrical Appliances</a>
                       </li>
                       <li className={styles.sub_menu1}>
                         <a href="/">Sport & Travel</a>
@@ -238,7 +276,10 @@ export default function Navbar() {
                     </ul>
                   </li>
                   <li className={styles.menu_item}>
-                    <a className={styles.menu_heading} href="">
+                    <a
+                      className={styles.menu_heading}
+                      href="/suppliers/Suppliers"
+                    >
                       SUPPLIERS
                       <i
                         className="fa-solid fa-chevron-down"
@@ -281,6 +322,8 @@ export default function Navbar() {
                     </ul>
                   </li>
                 </ul>
+                {/* </li>
+                </ul> */}
               </div>
               <div className={styles.nav_right}>
                 <a
@@ -307,3 +350,20 @@ export default function Navbar() {
     </>
   );
 }
+
+export async function getStaticProps(context) {
+  const products = await axiosClient.get("/products");
+  const categories = await axiosClient.get("/categories");
+  const suppliers = await axiosClient.get("/suppliers");
+
+  return {
+    props: {
+      products,
+      categories,
+      suppliers,
+    },
+
+    // revalidate: 3600,
+  };
+}
+

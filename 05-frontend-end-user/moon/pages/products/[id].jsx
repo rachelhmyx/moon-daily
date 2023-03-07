@@ -237,14 +237,15 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { id } }) {
   console.log("id", id);
+  // console.log("params", params);
 
   // const product = await axiosClient(`/products/${params.id}`);
   const product = await axiosClient(`/products/${id}`);
   // console.log("product", product);
-  // console.log("params", params);
   return {
     props: {
       product,
     },
   };
 }
+
