@@ -63,3 +63,36 @@
   font-size: 20px;
   color: green;
 }
+
+/* Responsive */
+@media (max-width: 739px) {
+  .whishlist_title {
+    padding: 0;
+  }
+  .whishlist_link {
+    margin-left: 20px;
+  }
+
+  .whishlist_heading {
+    font-size: 32px;
+  }
+
+  .whishlist_name {
+    width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mobile_table {
+    max-width: 340px !important;
+  }
+
+  .product_title {
+    width: 70% !important;
+  }
+
+  .mobile_title,
+  .mobile_list {
+    display: none;
+  }
+}

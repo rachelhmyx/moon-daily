@@ -104,7 +104,7 @@ export default function ShopDefault({
                 onClick={() => toggleCarousel("prev")}
               >
                 <span
-                  className="carousel-control-prev-icon"
+                  className={`carousel-control-prev-icon ${styles.mobile_icon}`}
                   style={{
                     width: "50px",
                     height: "50px",
@@ -119,7 +119,7 @@ export default function ShopDefault({
                 onClick={() => toggleCarousel("next")}
               >
                 <span
-                  className="carousel-control-next-icon"
+                  className={`carousel-control-next-icon ${styles.mobile_icon}`}
                   style={{
                     width: "50px",
                     height: "50px",
@@ -654,10 +654,7 @@ export async function getStaticProps(context) {
   const suppliers = await axiosClient.get("/suppliers");
   const products = await axiosClient.get("/products");
   const categories = await axiosClient.get("/categories");
-  const subCategories = await axiosClient.get(
-    "/categories/number-products"
-  );
-  // const categories = await axiosClient.get("/categories/question/18");
+  const subCategories = await axiosClient.get("/categories/number-products");
 
   return {
     props: {

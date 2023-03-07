@@ -38,7 +38,7 @@
 }
 
 .shop_banner {
-  height: 470px;
+  /* height: 470px; */
   margin: 30px 0 45px;
 }
 
@@ -59,7 +59,7 @@
 .group_menu {
   display: flex;
   width: 25%;
-  height: 50%;
+  /* height: 50%; */
   border: 1px solid #ccc;
   background-color: #96f9ab;
   min-height: 290px;
@@ -168,7 +168,7 @@
 
 .shop_menu {
   margin-top: 50px;
-  height: 400px;
+  /* height: 400px; */
   display: flex;
   justify-content: space-between;
 }
@@ -219,4 +219,44 @@
 
 .layout_button:hover {
   transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 739px) {
+  .header_link {
+    margin-left: 20px;
+  }
+
+  .shop_container {
+    width: 340px;
+  }
+
+  .img_name {
+    width: 100%;
+    height: 190px;
+  }
+
+  .mobile_icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .group_menu {
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+  }
+
+  .shop_menu {
+    flex-direction: column;
+  }
+
+  .menu_left {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .menu_right {
+    width: 100%;
+  }
 }

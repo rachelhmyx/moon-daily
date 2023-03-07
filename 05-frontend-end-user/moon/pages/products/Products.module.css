@@ -40,3 +40,50 @@
 .product_price {
   color: #df5e13;
 }
+
+/* Product Details */
+.product_containers {
+  width: 1650px;
+}
+
+/* Responsive */
+@media (max-width: 739px) {
+  .header_link {
+    margin-left: 20px;
+  }
+
+  /* Product Details */
+  .product_containers {
+    width: 340px;
+    flex-direction: column;
+  }
+
+  .product_row {
+    width: 100% !important;
+  }
+
+  .mobile_list {
+    margin-bottom: 20px !important;
+  }
+
+  .mobile_img {
+    margin-right: 15px !important;
+  }
+
+  .mobile_heading {
+    font-size: 28px !important;
+  }
+
+  .mobile_button {
+    padding: 9px 12px !important;
+  }
+
+  .mobile_button1 {
+    padding: 10px 5px;
+  }
+
+  .mobile_menu {
+    width: 340px !important;
+    margin-top: 30px;
+  }
+}

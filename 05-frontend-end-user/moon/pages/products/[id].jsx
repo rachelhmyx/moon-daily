@@ -7,6 +7,7 @@ import { Rate } from "antd";
 import { DataContext } from "../../store/GlobalState";
 import { addToCart } from "../../store/Actions";
 import { addToFavourite } from "../../store/Actions";
+import styles from "./Products.module.css";
 
 export default function ProductDetails({ product }) {
   //-----------Set cho ảnh con-------------------------
@@ -24,17 +25,17 @@ export default function ProductDetails({ product }) {
   return (
     <>
       <div
-        className="d-flex justify-content-around align-items-center"
-        style={{ width: "1650px", marginRight: "auto", marginLeft: "auto" }}
+        className={`d-flex justify-content-around align-items-center ${styles.product_containers}`}
+        style={{ marginRight: "auto", marginLeft: "auto" }}
       >
         <Head>
           <title>ProductDetails</title>
         </Head>
         <div
-          className="row"
+          className={`row ${styles.product_row}`}
           style={{
             width: "1020px",
-            height: "620px",
+            // height: "620px",
             paddingTop: "30px",
             backgroundColor: "#75f9da",
             marginTop: "40px",
@@ -45,19 +46,24 @@ export default function ProductDetails({ product }) {
               src={`${API_URL}/${product.images[tab]}`}
               alt=""
               className="d-block img-thumbnail rounded mt-4 w-100"
-              style={{ height: "400px" }}
+              // style={{ height: "400px" }}
             />
             <div
-              className="row mx-0"
-              style={{ cursor: "pointer", paddingTop: "20px" }}
+              className={`row mx-0 ${styles.mobile_list}`}
+              style={{
+                cursor: "pointer",
+                paddingTop: "20px",
+                marginBottom: "50px",
+              }}
             >
               {product.images.map((img, index) => {
+                console.log("img", img);
                 return (
                   <img
                     key={index}
                     src={`${API_URL}/${img}`}
                     alt=""
-                    className="img-thumbnail rounded img-item"
+                    className={`img-thumbnail rounded img-item ${styles.mobile_img}`}
                     style={{
                       width: "20%",
                       height: "80px",
@@ -75,7 +81,7 @@ export default function ProductDetails({ product }) {
           </div>
           <div className="col-md-6 mt-3" style={{ padding: "0 38px" }}>
             <h1
-              className="text-uppercase"
+              className={`text-uppercase ${styles.mobile_heading}`}
               style={{
                 fontSize: "50px",
                 color: "green",
@@ -129,7 +135,7 @@ export default function ProductDetails({ product }) {
             <div className="button_list">
               <button
                 type="button"
-                className="btn btn-success d-block my-5 px-5"
+                className={`btn btn-success d-block my-5 px-5 ${styles.mobile_button}`}
                 style={{ marginTop: "20px" }}
                 onClick={() => dispatch(addToCart(product, cart))}
               >
@@ -137,7 +143,7 @@ export default function ProductDetails({ product }) {
               </button>
               <button
                 type="button"
-                className="button-heart"
+                className={`button-heart ${styles.mobile_button1}`}
                 onClick={() => dispatch(addToFavourite(product, favourite))}
               >
                 MY FAVOURITE
@@ -152,6 +158,7 @@ export default function ProductDetails({ product }) {
             width: "350px",
             backgroundColor: "#ebf374",
           }}
+          className={styles.mobile_menu}
         >
           <div
             className="d-flex align-items-center"
@@ -248,4 +255,3 @@ export async function getStaticProps({ params: { id } }) {
     },
   };
 }
-

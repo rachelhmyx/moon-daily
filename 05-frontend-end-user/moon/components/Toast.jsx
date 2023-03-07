@@ -8,7 +8,7 @@ export default function Toast({ msg, handleShow, bgColor }) {
         role="alert"
         autohide="true"
         data-bs-delay="2000"
-        style={{ top: "5px", right: "5px", zIndex: 9, minWidth: "280px" }}
+        style={{ top: "146px", right: "5px", zIndex: 9, minWidth: "280px" }}
       >
         <div
           className={`toast-header text-light d-flex justify-content-between ${bgColor}`}

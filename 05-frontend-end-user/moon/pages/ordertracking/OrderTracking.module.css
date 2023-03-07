@@ -87,3 +87,22 @@
   cursor: pointer;
   background-color: #ccc;
 }
+
+/* Responsive */
+@media (max-width: 739px) {
+  .order_link {
+    margin-left: 20px;
+  }
+
+  .order_heading {
+    font-size: 34px;
+  }
+
+  .order_content {
+    margin: 0 20px;
+  }
+
+  .order_form {
+    margin: 100px 20px 0 20px;
+  }
+}

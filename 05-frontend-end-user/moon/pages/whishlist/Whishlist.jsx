@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Head from "next/head";
 import styles from "./Whishlist.module.css";
 import { DataContext } from "../../store/GlobalState";
@@ -30,7 +30,7 @@ export default function Whishlist() {
           <div className={styles.whishlist_name}>Wishlist is empty!</div>
         ) : (
           <table
-            className="table ps-table--shopping-cart ps-table--responsive"
+            className={`table ps-table--shopping-cart ps-table--responsive ${styles.mobile_table}`}
             style={{
               maxWidth: "1130px",
               marginLeft: "auto",
@@ -53,9 +53,15 @@ export default function Whishlist() {
                 >
                   PRODUCT NAME
                 </th>
-                <th className={styles.product_title}>PRICE</th>
-                <th className={styles.product_title}>DISCOUNT</th>
-                <th className={styles.product_title}>TOTAL</th>
+                <th className={`styles.product_title} ${styles.mobile_title}`}>
+                  PRICE
+                </th>
+                <th className={`styles.product_title} ${styles.mobile_title}`}>
+                  DISCOUNT
+                </th>
+                <th className={`styles.product_title} ${styles.mobile_title}`}>
+                  TOTAL
+                </th>
                 <th className={styles.product_title}>ACTION</th>
               </tr>
             </thead>
@@ -78,7 +84,7 @@ export default function Whishlist() {
                         >
                           <img
                             className="img-thumbnail"
-                            src={`${API_URL}/${item.images[0]}`}
+                            src={`${API_URL}/${item.imageUrl}`}
                             alt=""
                             style={{ width: "120px", height: "120px" }}
                           />
@@ -94,6 +100,7 @@ export default function Whishlist() {
                         verticalAlign: "middle",
                         fontSize: "20px",
                       }}
+                      className={styles.mobile_list}
                     >
                       {numeral(item.price).format("0,0$")}
                     </td>
@@ -103,6 +110,7 @@ export default function Whishlist() {
                         verticalAlign: "middle",
                         fontSize: "20px",
                       }}
+                      className={styles.mobile_list}
                     >
                       {numeral(item.discount).format("0,0")}%
                     </td>
@@ -114,6 +122,7 @@ export default function Whishlist() {
                         color: "#ed6a0b",
                         fontSize: "20px",
                       }}
+                      className={styles.mobile_list}
                     >
                       {/* Tổng tiền theo số lượng của sản phẩm= tổng tiền 1sp( giá bán *(100- giảm giá)/100) * số lượng đặt hàng */}
                       {numeral(item.total * item.quantity).format("0,0$")}

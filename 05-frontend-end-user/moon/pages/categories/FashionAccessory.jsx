@@ -31,29 +31,26 @@ export default function FashionAccessory({ subCategories }) {
           {subCategories.map((c, id) => {
             if (id === 5) {
               return (
-                <div key={c._id}>
+                <div key={c._id} className={styles.product_item}>
                   <h3 className={styles.shop_heading}> {c.name}</h3>
-                  <div className={styles.shop_label}>5 Products Found</div>
+                  <div className={styles.shop_label}>4 Products Found</div>
 
                   <div className={styles.shop_product}>
                     {c.products.map((p) => {
                       console.log("p", p);
                       return (
-                        <div
-                          key={p._id}
-                          style={{ height: "500px" }}
-                          className={styles.product_item}
-                        >
+                        <div key={p._id} className={styles.product_item}>
                           <div
                             className="card"
                             style={{
                               width: "18rem",
                               border: "none",
                               height: "90%",
+                              margin: 0,
                             }}
                           >
                             <div className={styles.layout_thumbnail}>
-                              <a href={`products/${p._id}`}>
+                              <a href={`/products/${p._id}`}>
                                 <img
                                   src={`${API_URL}/${p.imageUrl}`}
                                   className="card-img-top"

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Head from "next/head";
 import styles from "./Register.module.css";
 import { useRouter } from "next/router";
+import { message } from "antd";
 
 export default function Register() {
   const router = useRouter();
@@ -24,7 +25,8 @@ export default function Register() {
     console.log(userData);
     //Lưu dữ liệu vào localStorage:
     localStorage.setItem("user", JSON.stringify(userData));
-    //Chuyển sang trang login:
+    message.success("Đăng ký thành công");
+    //Chuyển sang trang home:
     //Cách 1:
     window.location.href = "/";
     //Cách 2:
@@ -63,7 +65,7 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${styles.mobile_form}`}
                 id="name"
                 name="name"
                 value={name}
@@ -94,7 +96,7 @@ export default function Register() {
               </label>
               <input
                 type="email"
-                className="form-control"
+                className={`form-control ${styles.mobile_form}`}
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 placeholder="Email Address"
@@ -133,7 +135,7 @@ export default function Register() {
               </label>
               <input
                 type="password"
-                className="form-control"
+                className={`form-control ${styles.mobile_form}`}
                 id="exampleInputPassword1"
                 placeholder="Password..."
                 name="password"
@@ -165,7 +167,7 @@ export default function Register() {
               </label>
               <input
                 type="password"
-                className="form-control"
+                className={`form-control ${styles.mobile_form}`}
                 id="exampleInputPassword2"
                 placeholder="Password..."
                 name="confirm_password"
@@ -185,7 +187,7 @@ export default function Register() {
             <div className={styles.form_wrap}>
               <button
                 type="submit"
-                className="btn btn-primary"
+                className={`btn btn-primary ${styles.mobile_form}`}
                 style={{
                   height: "50px",
                   outline: "none",

@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useState } from "react";
+import Image from "next/image";
 import { Inter } from "@next/font/google";
+// import styles from '@/styles/Home.module.css'
 import styles from "./homepage/HomePage.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { API_URL } from "../constants/URLS";
@@ -39,10 +41,10 @@ export default function Home({
       <Head>
         <title>MOON</title>
       </Head>
-
       <main className={styles.home_page}>
         <div className={styles.home_banner}>
-          <div className={styles.banner_container}>
+          {/* Trên PC */}
+          <div className={styles.banner_container_PC}>
             <div className={styles.banner_left}>
               <div
                 id="carouselExampleCaptions"
@@ -164,6 +166,100 @@ export default function Home({
               </a>
             </div>
           </div>
+          {/* End */}
+          {/* Trên Mobile */}
+          <div className={styles.mobile_banner}>
+            <div className={styles.banner_left}>
+              <div id="demo" className="carousel slide" data-ride="carousel">
+                <div className="carousel-inner">
+                  {slides.map((s) => {
+                    if (s.sortOrder === 0) {
+                      return (
+                        <div className="carousel-item active" key={s._id}>
+                          <img
+                            src={`${API_URL}/${s.imageUrl}`}
+                            className="d-block"
+                            alt=""
+                            style={{ height: "215px", width: "100%" }}
+                          />
+                        </div>
+                      );
+                    }
+                    if (s.sortOrder !== 0) {
+                      return (
+                        <div className="carousel-item" key={s._id}>
+                          <img
+                            src={`${API_URL}/${s.imageUrl}`}
+                            className="d-block"
+                            alt=""
+                            style={{ height: "215px", width: "100%" }}
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+                  <div className="carousel-caption d-md-block">
+                    <button className={styles.carousel_button}>
+                      <a href="/shop/ShopDefault">SHOP NOW</a>
+                    </button>
+                  </div>
+                </div>
+                <a
+                  className="carousel-control-prev"
+                  href="#demo"
+                  data-slide="prev"
+                  onClick={() => toggleCarousel("prev")}
+                >
+                  <span
+                    className={`carousel-control-prev-icon ${styles.mobile_icon}`}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      backgroundColor: "#e9822b",
+                    }}
+                  ></span>
+                </a>
+                <a
+                  className="carousel-control-next"
+                  href="#demo"
+                  data-slide="next"
+                  onClick={() => toggleCarousel("next")}
+                >
+                  <span
+                    className={`carousel-control-next-icon ${styles.mobile_icon}`}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      backgroundColor: "#e9822b",
+                    }}
+                  ></span>
+                </a>
+              </div>
+            </div>
+            <div className={styles.banner_right}>
+              <a
+                href="/shop/ShopDefault"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                {advertisements &&
+                  advertisements.map((a) => {
+                    return (
+                      <img
+                        key={a._id}
+                        src={`${API_URL}/${a.imageUrl}`}
+                        alt=""
+                        style={{
+                          width: "48%",
+                          height: "100px",
+                          marginBottom: "50px",
+                        }}
+                      />
+                    );
+                  })}
+              </a>
+            </div>
+          </div>
+          {/* End */}
           <div className={styles.banner_features}>
             <div className={styles.banner_container}>
               <div className={styles.features_block}>
@@ -191,7 +287,8 @@ export default function Home({
           </div>
         </div>
         <div className={styles.home_deal}>
-          <div className={styles.deal_header}>
+          {/* Trên PC */}
+          <div className={styles.deal_header_PC}>
             <div className={styles.deal_left}>
               <h3 className={styles.deal_heading}>Deal Of The Day</h3>
             </div>
@@ -206,6 +303,26 @@ export default function Home({
               View All
             </a>
           </div>
+          {/* End */}
+          {/* Trên Mobile */}
+          <div className={styles.deal_mobile}>
+            <div className={styles.deal_header}>
+              <div className={styles.deal_left}>
+                <h3 className={styles.deal_heading}>Deal Of The Day</h3>
+              </div>
+              <div className={styles.deal_right}>
+                <h4 className={styles.deal_name}>End In: </h4>
+                <Countdown
+                  value={deadline}
+                  style={{ color: "#fff !important", fontWeight: "700" }}
+                />
+              </div>
+            </div>
+            <a href="/shop/ShopDefault" className={styles.deal_link}>
+              View All
+            </a>
+          </div>
+          {/* End */}
           <div className={styles.deal_content}>
             {products.map((product) => {
               if (product.dealOfTheDay === true) {
@@ -287,7 +404,7 @@ export default function Home({
                   >
                     <img
                       src={`${API_URL}/${category.imageUrl}`}
-                      className="card-img-top"
+                      className={`card-img-top ${styles.mobile_img}`}
                       alt=""
                       style={{
                         width: "155px",

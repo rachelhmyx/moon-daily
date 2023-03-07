@@ -71,3 +71,25 @@
   margin-right: 100px;
   color: red;
 }
+
+/* Responsive */
+@media (max-width: 739px) {
+  .account_title {
+    padding: 0;
+  }
+  .account_link {
+    margin-left: 20px;
+  }
+
+  .account_form {
+    width: 340px;
+  }
+
+  .mobile_form {
+    width: 285px !important;
+  }
+
+  .account_register {
+    margin-right: 12px;
+  }
+}

@@ -4,13 +4,9 @@ import img from "./images/shopping-cart.png";
 import Image from "next/image";
 import Link from "next/link";
 import { DataContext } from "../../store/GlobalState";
-import { axiosClient } from "../../libraries/axiosClient";
-
-export default function Navbar({ categories, products, suppliers }) {
-  // console.log("suppliers", suppliers);
-
+export default function Navbar() {
   //-----------Set giá trị mặc định cho giỏ hàng------------
-  const { state, dispatch } = useContext(DataContext);
+  const { state } = useContext(DataContext);
   const { cart } = state;
   const { favourite } = state;
 
@@ -20,7 +16,8 @@ export default function Navbar({ categories, products, suppliers }) {
         <div className={styles.header}>
           <div className={styles.header_top}>
             <div className={styles.header_container}>
-              <div className={styles.header_left}>
+              {/* Trên PC */}
+              <div className={styles.header_left_PC}>
                 <Image
                   src={img}
                   alt=""
@@ -28,9 +25,11 @@ export default function Navbar({ categories, products, suppliers }) {
                   height={50}
                   className={styles.image}
                 />
-                <h1 className={styles.heading}>MOON</h1>
+                <h1 className={styles.heading}>
+                  <a href="/">MOON</a>
+                </h1>
               </div>
-              <div className={styles.header_center}>
+              <div className={styles.header_center_PC}>
                 <div className={styles.menu_icon}>
                   <a
                     href="/searchproducts/SearchProducts"
@@ -48,7 +47,6 @@ export default function Navbar({ categories, products, suppliers }) {
                     }}
                   ></i>
                 </div>
-
                 <ul className={styles.header_sub}>
                   <li className={styles.header_sub1}>
                     <a href="/categories/SmartPhoneAccessory">
@@ -78,7 +76,7 @@ export default function Navbar({ categories, products, suppliers }) {
                   </li>
                 </ul>
               </div>
-              <div className={styles.header_right}>
+              <div className={styles.header_right_PC}>
                 <div className={styles.header_actions}>
                   <Link legacyBehavior href="/whishlist/Whishlist">
                     <a className={styles.header_extra}>
@@ -127,46 +125,132 @@ export default function Navbar({ categories, products, suppliers }) {
                   </div>
                 </div>
               </div>
+              {/* End */}
+              {/* Trên Mobile */}
+              <div className={styles.mobile_header}>
+                <div className={styles.mobile_top}>
+                  <div className={styles.header_left}>
+                    <Image
+                      src={img}
+                      alt=""
+                      width={50}
+                      height={50}
+                      className={styles.image}
+                    />
+                    <h1 className={styles.heading}>
+                      <a href="/">MOON</a>
+                    </h1>
+                  </div>
+                  <div className={styles.header_right}>
+                    <div className={styles.header_actions}>
+                      <Link legacyBehavior href="/whishlist/Whishlist">
+                        <a className={styles.header_extra}>
+                          <i
+                            className="fa-regular fa-heart"
+                            style={{ fontSize: "29px", color: "#db6451" }}
+                          ></i>
+                          <span className={styles.header_item}>
+                            <i className={styles.header_number}>
+                              {/* Số trên mục yêu thích phụ thuộc vào độ dài của sản phẩm */}
+                              {favourite.length}
+                            </i>
+                          </span>
+                        </a>
+                      </Link>
+                      <div className={styles.header_extra}>
+                        <i
+                          className="fa-solid fa-cart-plus"
+                          style={{ fontSize: "29px", color: "#db6451" }}
+                        ></i>
+                        <span className={styles.header_item}>
+                          <i className={styles.header_number}>{cart.length}</i>
+                          {/* Số trên giỏ hàng phụ thuộc vào độ dài của sản phẩm */}
+                        </span>
+                        <div>
+                          {cart.length === 0 ? (
+                            <div className={styles.desc}>
+                              No products in cart
+                            </div>
+                          ) : (
+                            <Link className={styles.desc} href="/cartshop/Cart">
+                              View cart
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                      <div className={styles.header_user}>
+                        <div className={styles.user_left}>
+                          <i
+                            className="fa-regular fa-user"
+                            style={{ fontSize: "33px", color: "#db6451" }}
+                          ></i>
+                        </div>
+                        <div className={styles.user_right}>
+                          <Link href="/login/Login">LOGIN</Link>
+                          <Link href="/register/Register">REGISTER</Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.header_center}>
+                  <div className={styles.menu_icon}>
+                    <a
+                      href="/searchproducts/SearchProducts"
+                      className={styles.header_name}
+                    >
+                      Search Products
+                    </a>
+                    <i
+                      className="fa-solid fa-chevron-down"
+                      style={{
+                        fontSize: "26px",
+                        marginLeft: "auto",
+                        marginRight: "23px",
+                        color: "#726f6f",
+                      }}
+                    ></i>
+                  </div>
+                  <ul className={styles.header_sub}>
+                    <li className={styles.header_sub1}>
+                      <a href="/categories/SmartPhoneAccessory">
+                        Smart Phone & Accessory
+                      </a>
+                    </li>
+                    <li className={styles.header_sub1}>
+                      <a href="/categories/ElectronicEquipment">
+                        Electronic Equipment
+                      </a>
+                    </li>
+                    <li className={styles.header_sub1}>
+                      <a href="/categories/HouseholdElectricalAppliances">
+                        Household Electrical Appliances
+                      </a>
+                    </li>
+                    <li className={styles.header_sub1}>
+                      <a href="/categories/MomBabies">Mom & Babies</a>
+                    </li>
+                    <li className={styles.header_sub1}>
+                      <a href="/categories/BeautyProducts">Beauty Products</a>
+                    </li>
+                    <li className={styles.header_sub1}>
+                      <a href="/categories/FashionAccessory">
+                        Fashion And Accessory
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              {/* End */}
             </div>
           </div>
           <nav className={styles.nav}>
+            {/* Trên PC */}
             <div className={styles.nav_container}>
-              <div className={styles.nav_left}>
-                {/* <ul className={styles.menu}>
-                  <li className={styles.menu_item}>
-                    <a className={styles.menu_heading} href="/">
-                      HOME
-                      <i
-                        className="fa-solid fa-chevron-down"
-                        style={{ fontSize: "15px", paddingLeft: "10px" }}
-                      ></i>
-                    </a>
-                  </li>
-                  <li className={styles.menu_item}>
-                    <a
-                      className={styles.menu_heading}
-                      href="/categories/Categories"
-                    >
-                      CATEGORIES
-                      <i
-                        className="fa-solid fa-chevron-down"
-                        style={{ fontSize: "15px", paddingLeft: "10px" }}
-                      ></i>
-                    </a>
-                    <ul className={styles.sub_menu}>
-                      {categories &&
-                        categories.map((category) => {
-                          console.log("c", category);
-                          return (
-                            <li key={category._id} className={styles.menu_item}>
-                              <a href="">{category.name}</a>
-                            </li>
-                          );
-                        })}
-                    </ul> */}
+              <div className={styles.nav_left_PC}>
                 <ul className={styles.menu}>
                   <li className={styles.menu_item}>
-                    <a className={styles.menu_heading} href="/">
+                    <a className={styles.menu_heading1} href="/">
                       HOME
                       <i
                         className="fa-solid fa-chevron-down"
@@ -322,8 +406,6 @@ export default function Navbar({ categories, products, suppliers }) {
                     </ul>
                   </li>
                 </ul>
-                {/* </li>
-                </ul> */}
               </div>
               <div className={styles.nav_right}>
                 <a
@@ -344,26 +426,54 @@ export default function Navbar({ categories, products, suppliers }) {
                 </div>
               </div>
             </div>
+            {/* End */}
+            {/* Trên Mobile */}
+            <div className={styles.mobile_nav}>
+              <div className={styles.nav_left}>
+                <ul className={styles.menu}>
+                  <li className={styles.menu_item}>
+                    <a
+                      className={styles.menu_heading}
+                      href="/categories/Categories"
+                    >
+                      CATEGORIES
+                      <i
+                        className="fa-solid fa-chevron-down"
+                        style={{ fontSize: "15px", paddingLeft: "10px" }}
+                      ></i>
+                    </a>
+                  </li>
+                  <li className={styles.menu_item}>
+                    <a
+                      className={styles.menu_heading}
+                      href="/products/Products"
+                    >
+                      PRODUCTS
+                      <i
+                        className="fa-solid fa-chevron-down"
+                        style={{ fontSize: "15px", paddingLeft: "10px" }}
+                      ></i>
+                    </a>
+                  </li>
+                  <li className={styles.menu_item}>
+                    <a
+                      className={styles.menu_heading}
+                      href="/suppliers/Suppliers"
+                    >
+                      SUPPLIERS
+                      <i
+                        className="fa-solid fa-chevron-down"
+                        style={{ fontSize: "15px", paddingLeft: "10px" }}
+                      ></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {/* End */}
           </nav>
         </div>
       </div>
     </>
   );
 }
-
-export async function getStaticProps(context) {
-  const products = await axiosClient.get("/products");
-  const categories = await axiosClient.get("/categories");
-  const suppliers = await axiosClient.get("/suppliers");
-
-  return {
-    props: {
-      products,
-      categories,
-      suppliers,
-    },
-
-    // revalidate: 3600,
-  };
-}
-

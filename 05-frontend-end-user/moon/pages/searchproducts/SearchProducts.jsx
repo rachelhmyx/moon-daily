@@ -26,6 +26,9 @@ export default function Search() {
     setSelectedProduct(product);
   };
 
+  // const handleProduct = (e) => {
+  //   setSearch(e.target.value);
+  // };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -45,7 +48,8 @@ export default function Search() {
       </Head>
       <div className={styles.form_container}>
         <form onSubmit={handleSearch} style={{ border: "none" }}>
-          <div className={styles.form_content}>
+          {/* Trên PC */}
+          <div className={styles.form_content_PC}>
             <Autocomplete
               items={filterProducts}
               getItemValue={(product) => product.name}
@@ -65,12 +69,42 @@ export default function Search() {
                 },
               }}
               wrapperStyle={{ border: "1px solid #888484" }}
+              className={styles.mobile_form}
             />
 
             <button type="submit" className={styles.form_button}>
               Search
             </button>
           </div>
+          {/* End */}
+          {/* Trên Mobile */}
+          <div className={styles.form_content}>
+            <Autocomplete
+              items={filterProducts}
+              getItemValue={(product) => product.name}
+              renderItem={(product) => <div>{product.name}</div>}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onSelect={handleSelectProduct}
+              inputProps={{
+                style: {
+                  color: "green",
+                  border: "none",
+                  outline: "none",
+                  fontSize: "24px",
+                  width: "70%",
+                  height: "56px",
+                  paddingLeft: "20px",
+                },
+              }}
+              wrapperStyle={{ border: "1px solid #888484" }}
+            />
+
+            <button type="submit" className={styles.form_button}>
+              Search
+            </button>
+          </div>
+          {/* End */}
         </form>
       </div>
       <div className={styles.product_container}>
@@ -94,6 +128,7 @@ export default function Search() {
                             height: "250px",
                             marginLeft: "100px",
                           }}
+                          className={styles.mobile_img}
                         />
                       </a>
                     </div>

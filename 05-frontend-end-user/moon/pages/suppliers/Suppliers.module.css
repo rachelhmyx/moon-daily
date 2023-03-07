@@ -84,3 +84,24 @@
   color: blue;
   font-size: 24px;
 }
+
+/* Responsive */
+@media (max-width: 739px) {
+  .header_link {
+    margin-left: 20px;
+  }
+
+  .supplier_container {
+    margin: 50px 30px;
+  }
+
+  .mobile_img {
+    width: 100px;
+    height: 90px;
+  }
+
+  .supplier_heading {
+    padding-left: 20px;
+    font-size: 36px;
+  }
+}

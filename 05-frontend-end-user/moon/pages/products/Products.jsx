@@ -7,12 +7,10 @@ import { API_URL } from "../../constants/URLS";
 import { DataContext } from "../../store/GlobalState";
 import { addToCart } from "../../store/Actions";
 
-
 export default function Products({ products }) {
   //---------Thêm sản phẩm vào giỏ hàng----------------
   const { state, dispatch } = useContext(DataContext);
   const { cart } = state;
-  
 
   return (
     <>
@@ -85,7 +83,6 @@ export default function Products({ products }) {
                           >
                             Buy
                           </button>
-                          {/* {userLink(product._id)} */}
                         </div>
                       </div>
                     </div>
@@ -95,14 +92,11 @@ export default function Products({ products }) {
           </div>
         </div>
       </div>
-
-      
     </>
   );
 }
 
 export async function getStaticProps(context) {
-  
   const products = await axiosClient.get("/products");
 
   return {

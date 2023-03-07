@@ -22,7 +22,7 @@ export default function Footer() {
                   justifyContent: "space-between",
                 }}
               >
-                <div className="col-sm-5 ">
+                <div className="col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 ">
                   <div className={styles.form_left}>
                     <h1 className={styles.heading}>Newsletter</h1>
                     <span className={styles.desc}>
@@ -30,7 +30,7 @@ export default function Footer() {
                     </span>
                   </div>
                 </div>
-                <div className="col-sm-7 ">
+                <div className="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 ">
                   <div className={styles.form_right}>
                     <input
                       className={styles.input}
@@ -276,7 +276,7 @@ export default function Footer() {
             </div>
           </div>
           <div className={styles.footer_copyright}>
-            <div style={{ color: "green" }}>
+            <div style={{ color: "green" }} className={styles.mobile_name}>
               2023: Moon Daily.All Rights Reserved
             </div>
             <div className={styles.footer_menu}>

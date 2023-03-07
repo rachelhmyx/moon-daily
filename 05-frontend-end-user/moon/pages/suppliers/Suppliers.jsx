@@ -5,7 +5,7 @@ import { axiosClient } from "../../libraries/axiosClient";
 import styles from "./Suppliers.module.css";
 import numeral from "numeral";
 
-export default function Suppliers({ suppliers, subSuppliers }) {
+export default function Suppliers({ subSuppliers }) {
   console.log("subSuppliers", subSuppliers);
   return (
     <>
@@ -28,13 +28,14 @@ export default function Suppliers({ suppliers, subSuppliers }) {
         {subSuppliers &&
           subSuppliers.map((supplier) => {
             return (
-              <div>
-                <div key={supplier._id} className={styles.supplier_list}>
+              <div key={supplier._id}>
+                <div className={styles.supplier_list}>
                   <img
                     src={`${API_URL}${supplier.imageUrl}`}
                     alt=""
                     width={200}
                     height={100}
+                    className={styles.mobile_img}
                   />
                   <h3 className={styles.supplier_heading}>{supplier.name}</h3>
                 </div>
@@ -87,12 +88,10 @@ export default function Suppliers({ suppliers, subSuppliers }) {
 }
 
 export async function getStaticProps(context) {
-  const suppliers = await axiosClient.get("/suppliers");
   const subSuppliers = await axiosClient.get("/suppliers/number-products");
 
   return {
     props: {
-      suppliers,
       subSuppliers,
     },
 
