@@ -17,6 +17,7 @@ import {
   EllipsisOutlined,
   PlusOutlined,
   UploadOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { API_URL } from "../../constants/URLS";
 import axios from "axios";
@@ -253,6 +254,30 @@ function Suppliers() {
                         console.log("Selected Supplier:", s.name);
                         setSelectedSupplier(s);
                       }}
+                    />,
+
+                    <DeleteOutlined
+                      key="delete"
+                      title="Delete"
+                      onClick={() => {
+                        //Delete data:
+                        const id = s._id;
+                        axiosClient
+                          .delete("/suppliers/" + id)
+                          .then((response) => {
+                            message.success("Deleted Successful!");
+                            setRefresh((f) => {
+                              return f + 1;
+                            });
+                          })
+                          .catch((err) => {
+                            message.error("Deleted Failed");
+                          });
+                        console.log("Delete", s);
+                      }}
+                      onCancel={() => {}}
+                      okText="Yes"
+                      cancelText="No"
                     />,
                   ]}
                 >

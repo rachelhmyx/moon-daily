@@ -6,20 +6,27 @@ import numeral from "numeral";
 import "numeral/locales/vi";
 import { useEffect } from "react";
 import { DataProvider } from "../store/GlobalState";
+import { SessionProvider } from "next-auth/react";
 
 numeral.locale("vi");
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
+  console.log("session", session, pageProps);
   return (
     <>
-      <DataProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </DataProvider>
+      <SessionProvider session={session}>
+        <DataProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </DataProvider>
+      </SessionProvider>
     </>
   );
 }

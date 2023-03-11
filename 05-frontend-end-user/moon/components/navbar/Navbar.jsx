@@ -4,8 +4,11 @@ import img from "./images/shopping-cart.png";
 import Image from "next/image";
 import Link from "next/link";
 import { DataContext } from "../../store/GlobalState";
+import { useSession, signOut } from "next-auth/react";
+
 export default function Navbar() {
   //-----------Set giá trị mặc định cho giỏ hàng------------
+  const { data, status } = useSession();
   const { state } = useContext(DataContext);
   const { cart } = state;
   const { favourite } = state;
@@ -119,8 +122,20 @@ export default function Navbar() {
                       ></i>
                     </div>
                     <div className={styles.user_right}>
-                      <Link href="/login/Login">LOGIN</Link>
-                      <Link href="/register/Register">REGISTER</Link>
+                      {data && data.user ? (
+                        <>
+                          {/* <button onClick={() => signOut()}>LOGOUT</button> */}
+                          <Link href="" onClick={() => signOut()}>
+                            LOGOUT
+                          </Link>
+                          <span>{data.user.username}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Link href="/login/Login">LOGIN</Link>
+                          <Link href="/register/Register">REGISTER</Link>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

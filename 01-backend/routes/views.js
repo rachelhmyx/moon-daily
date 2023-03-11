@@ -25,8 +25,7 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
   try {
-    View.find()
-    .then((result) => {
+    View.find().then((result) => {
       res.send(result);
     });
   } catch (error) {

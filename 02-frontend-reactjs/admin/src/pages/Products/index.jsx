@@ -18,6 +18,7 @@ import {
   Card,
   Rate,
   Tag,
+  Table,
 } from "antd";
 import {
   DeleteOutlined,
@@ -49,7 +50,6 @@ function Products() {
   const [selectedProductDetails, setSelectedProductDetails] =
     React.useState(null);
   const [isPreview, setIsPreview] = React.useState(false);
-
 
   //set useEffect:
   //Products:
@@ -139,6 +139,114 @@ function Products() {
 
   const [createForm] = Form.useForm();
   const [updateForm] = Form.useForm();
+
+  const columns = [
+    {
+      title: "",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
+      render: (text) => {
+        return (
+          <div>
+            {text && (
+              <img src={`${API_URL}${text}`} style={{ width: 60 }} alt="" />
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => {
+        return <strong style={{ color: "blue" }}>{text}</strong>;
+      },
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (text) => {
+        return <strong>{numeral(text).format("0,0$")}</strong>;
+      },
+    },
+    {
+      title: "Sold",
+      dataIndex: "sold",
+      key: "sold",
+      render: (text) => {
+        return <strong>{numeral(text).format("0,0")}</strong>;
+      },
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      render: (text) => {
+        return <strong>{numeral(text).format("0,0")}</strong>;
+      },
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (record) => {
+        return (
+          <Space>
+            <Popconfirm
+              title="Are you sure to delete this row?"
+              onConfirm={() => {
+                //Delete:
+                const id = record._id;
+                axiosClient
+                  .delete("/products/" + id)
+                  .then((response) => {
+                    message.success("Delete Successful!");
+                    setRefresh((f) => {
+                      return f + 1;
+                    });
+                  })
+                  .catch((err) => {
+                    message.error("Delete Failed!");
+                  });
+                console.log("Delete", record);
+              }}
+              onCancel={() => {}}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="dashed" danger icon={<DeleteOutlined />}></Button>
+            </Popconfirm>
+
+            {/* Edit */}
+            <Button
+              type="dashed"
+              icon={<EditOutlined />}
+              onClick={() => {
+                setIsVisibleEditForm(true);
+                console.log("Selected Product:", record);
+                setSelectedProduct(record);
+                updateForm.setFieldsValue(record);
+              }}
+            ></Button>
+            {/* End of Edit */}
+
+            {/* More Details */}
+            <Button
+              type="dashed"
+              icon={<EllipsisOutlined />}
+              onClick={() => {
+                console.log("Selected Product:", record.name);
+                setSelectedProductDetails(record);
+              }}
+            ></Button>
+
+            {/* End of More Details */}
+          </Space>
+        );
+      },
+    },
+  ];
 
   return (
     <div style={{ padding: "20px" }}>
@@ -320,96 +428,7 @@ function Products() {
             key: "1",
             children: (
               <>
-                <Row gutter={16}>
-                  {products &&
-                    products.map((p) => {
-                      return (
-                        <Col span={8} key={p._id}>
-                          <Card
-                            style={{ width: "320px", marginBottom: "120px" }}
-                            bordered={true}
-                            hoverable
-                            cover={
-                              <img
-                                alt=""
-                                src={`${API_URL}${p.imageUrl}`}
-                                style={{ width: "100%", height: "300px" }}
-                              />
-                            }
-                            actions={[
-                              <EditOutlined
-                                key="edit"
-                                title="Edit"
-                                onClick={() => {
-                                  setIsVisibleEditForm(true);
-                                  console.log("Selected Product:", p);
-                                  setSelectedProduct(p);
-                                  updateForm.setFieldsValue(p);
-                                }}
-                              />,
-
-                              <EllipsisOutlined
-                                key="ellipsis"
-                                title="More Details"
-                                onClick={() => {
-                                  console.log("Selected Product:", p.name);
-                                  setSelectedProductDetails(p);
-                                }}
-                              />,
-
-                              <Popconfirm
-                                title="Are you sure to delete this row?"
-                                onConfirm={() => {
-                                  //Xóa data:
-                                  const id = p._id;
-                                  axiosClient
-                                    .delete("/products/" + id)
-                                    .then((response) => {
-                                      message.success("Deleted successfully!");
-                                      setRefresh((f) => {
-                                        return f + 1;
-                                      });
-                                    })
-                                    .catch((error) => {
-                                      message.error("Deleted failed!");
-                                      console.log("Error:", error);
-                                    });
-                                  console.log("Delete:", p);
-                                }}
-                                onCancel={() => {}}
-                                okText="Yes"
-                                cancelText="No"
-                              >
-                                <DeleteOutlined />
-                              </Popconfirm>,
-                            ]}
-                          >
-                            <Meta
-                              title={p.name}
-                              style={{ marginBottom: "15px" }}
-                            />
-
-                            <div>
-                              <p>{`Price : ${numeral(p.price).format(
-                                "0,0$"
-                              )}`}</p>
-                              <p>{`Sold: ${numeral(p.sold).format("0,0")}`}</p>
-                              <p>{`Avalable Stock: ${numeral(p.stock).format(
-                                "0,0"
-                              )}`}</p>
-                              <span>
-                                <Rate
-                                  disabled
-                                  allowHalf
-                                  defaultValue={p.rating}
-                                />
-                              </span>
-                            </div>
-                          </Card>
-                        </Col>
-                      );
-                    })}
-                </Row>
+                <Table rowKey="_id" dataSource={products} columns={columns} />
               </>
             ),
           },
@@ -418,7 +437,7 @@ function Products() {
             key: "2",
             children: (
               <>
-                <Row gutter={16}>
+              <Row gutter={16}>
                   {products &&
                     products.map((p) => {
                       if (p.hotItem === true) {
@@ -519,7 +538,7 @@ function Products() {
                 </Row>
               </>
             ),
-          },
+            },
           {
             label: `New Arrival`,
             key: "3",

@@ -17,6 +17,7 @@ import {
   EllipsisOutlined,
   PlusOutlined,
   UploadOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { API_URL } from "../../constants/URLS";
 import numeral from "numeral";
@@ -215,6 +216,30 @@ function Categories() {
                         setSelectedCategory(c);
                       }}
                     />,
+
+                    <DeleteOutlined
+                      key="delete"
+                      title="Delete"
+                      onClick={() => {
+                        //Delete data:
+                        const id = c._id;
+                        axiosClient
+                          .delete("/categories/" + id)
+                          .then((response) => {
+                            message.success("Deleted Successful!");
+                            setRefresh((f) => {
+                              return f + 1;
+                            });
+                          })
+                          .catch((err) => {
+                            message.error("Deleted Failed");
+                          });
+                        console.log("Delete", c);
+                      }}
+                      onCancel={() => {}}
+                      okText="Yes"
+                      cancelText="No"
+                    />,
                   ]}
                 >
                   <Meta
@@ -307,10 +332,10 @@ function Categories() {
                                 }
                               >
                                 <Meta
-                                title={p.name}
-                                style={{ marginBottom: "15px" }}
-                              />
-                              <div></div>
+                                  title={p.name}
+                                  style={{ marginBottom: "15px" }}
+                                />
+                                <div></div>
                                 <p>{`Price : ${numeral(p.price).format(
                                   "0,0$"
                                 )}`}</p>
@@ -329,7 +354,6 @@ function Categories() {
                 </>
               ),
             },
-
           ]}
         />
       </Modal>

@@ -1,17 +1,25 @@
 var express = require("express");
 var router = express.Router();
 const yup = require("yup");
+//--------------------------------------------
+const { default: mongoose } = require("mongoose");
+const { UserSignUp } = require("../models");
+const bcrypt = require("bcrypt");
+//--------------------------------------------
 const { validateSchema } = require("../schemas");
 //import passport và jwt để làm authentication:
 var passport = require("passport");
 var jwt = require("jsonwebtoken");
 const jwtSettings = require("../constants/jwtSettings");
-const { findDocuments, findDocument } = require("../helpers/MongoDbHelper");
+const { findDocuments, findDocument } = require("../helpers/MongoDBHelper");
+//----------------------------------------------------------
+mongoose.connect("mongodb://127.0.0.1:27017/Moon-Daily");
+//-----------------------------------------------------------
 
 //Login validate: data user đưa lên có đúng với kiểu đã được định nghĩa hay không:
 const loginSchema = yup.object({
   body: yup.object({
-    username: yup.string().email().required(),
+    email: yup.string().email().required(),
     password: yup.string().required(),
   }),
 });
@@ -46,30 +54,29 @@ router.post(
   "/login-jwt",
   validateSchema(loginSchema),
   async (req, res, next) => {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
+    //------------------------------------------------------
+    const user = await UserSignUp.findOne({ email: email });
 
-    const found = await findDocuments(
-      {
-        query: {
-          username: username,
-          password: password,
-        },
-      },
-      "login"
-    );
+    if (user) {
+      const id = user._id.toString();
+      // check user password with hashed password stored in the database
+      const validPassword = await bcrypt.compare(password, user.password);
 
-    if (found && found.length > 0) {
-      const id = found[0]._id.toString();
+      if (!validPassword) {
+        res.status(400).json({ error: "Invalid Password" });
+      }
       //Cấp Token: Sau khi login được sẽ cấp cho user Token:
       //Payload là 1 object data, chứa thông tin của người dùng sau khi login thành công:
       var payload = {
         user: {
-          username: username,
-          fullName: "End User",
+          email: email,
+          username: user.username,
         },
         application: "ecommerce",
       };
+      //---------------------------------------------------------
 
       var secret = jwtSettings.SECRET;
       var token = jwt.sign(payload, secret, {
@@ -91,7 +98,7 @@ router.post(
         }
       );
 
-      res.send({ message: "Login Success", token, refreshToken });
+      res.send({ status: true, message: "Login Success", token, refreshToken });
       return;
     }
     res.status(401).send({ message: "Login Failed" });

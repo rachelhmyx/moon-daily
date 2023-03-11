@@ -3,17 +3,21 @@ import Head from "next/head";
 import styles from "./Register.module.css";
 import { useRouter } from "next/router";
 import { message } from "antd";
+import { axiosClient } from "../../libraries/axiosClient";
 
 export default function Register() {
   const router = useRouter();
   const initialState = {
-    name: "",
+    username: "",
+    gender: "",
+    phoneNumber: "",
     email: "",
     password: "",
     confirm_password: "",
   };
   const [userData, setUserData] = useState(initialState);
-  const { name, email, password, confirm_password } = userData;
+  const { username, gender, phoneNumber, email, password, confirm_password } =
+    userData;
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -22,15 +26,22 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userData);
-    //Lưu dữ liệu vào localStorage:
-    localStorage.setItem("user", JSON.stringify(userData));
-    message.success("Đăng ký thành công");
-    //Chuyển sang trang home:
-    //Cách 1:
-    window.location.href = "/";
-    //Cách 2:
-    // router.push("/");
+    axiosClient
+      .post("/sign-up", userData)
+      .then((response) => {
+        //SignIn is successfully
+        // window.location.href = '/login/Login';
+        console.log(response.data);
+        localStorage.setItem("user", JSON.stringify(userData));
+        message.success("Đăng ký thành công!");
+        router.push("/");
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          message.error("Đăng ký không thành công!");
+        }
+      });
+    //
   };
 
   return (
@@ -67,8 +78,73 @@ export default function Register() {
                 type="text"
                 className={`form-control ${styles.mobile_form}`}
                 id="name"
-                name="name"
-                value={name}
+                name="username"
+                value={username}
+                onChange={handleChangeInput}
+                style={{
+                  height: "50px",
+                  outline: "none",
+                  border: "none",
+                  border: "1px solid #ccc",
+                  fontSize: "16px",
+                  paddingLeft: "14px",
+                  marginBottom: "20px",
+                  width: "380px",
+                }}
+              />
+            </div>
+            <div className={styles.form}>
+              <label
+                htmlFor="gender"
+                className="form-label"
+                style={{
+                  color: "#3a3737",
+                  fontSize: "18px",
+                  paddingBottom: "4px",
+                }}
+              >
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                value={gender}
+                onChange={handleChangeInput}
+                className={styles.mobile_form}
+                style={{
+                  height: "50px",
+                  outline: "none",
+                  border: "none",
+                  border: "1px solid #ccc",
+                  fontSize: "16px",
+                  paddingLeft: "14px",
+                  marginBottom: "20px",
+                  width: "380px",
+                }}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Orther</option>
+              </select>
+            </div>
+            <div className={styles.form}>
+              <label
+                htmlFor="phoneNumber"
+                className="form-label"
+                style={{
+                  color: "#3a3737",
+                  fontSize: "18px",
+                  paddingBottom: "4px",
+                }}
+              >
+                Phone Number
+              </label>
+              <input
+                type="text"
+                className={`form-control ${styles.mobile_form}`}
+                id="name"
+                name="phoneNumber"
+                value={phoneNumber}
                 onChange={handleChangeInput}
                 style={{
                   height: "50px",

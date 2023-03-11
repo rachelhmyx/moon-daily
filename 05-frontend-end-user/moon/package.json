@@ -16,11 +16,14 @@
     "bootstrap": "^5.2.3",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "next": "13.1.6",
+    "next-auth": "^4.20.1",
     "numeral": "^2.0.6",
     "react": "^18.2.0",
     "react-autocomplete": "^1.8.1",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2"
   }
 }

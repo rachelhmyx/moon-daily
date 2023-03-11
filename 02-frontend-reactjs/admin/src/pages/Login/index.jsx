@@ -46,7 +46,7 @@ function Login() {
             >
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="User Email"
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item

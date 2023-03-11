@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose");
 const { Category } = require("../models");
 var express = require("express");
 var router = express.Router();
-const { findDocuments } = require("../helpers/MongoDbHelper");
+const { findDocuments } = require("../helpers/MongoDBHelper");
 mongoose.connect("mongodb://127.0.0.1:27017/Moon-Daily");
 
 router.post("/", (req, res, next) => {

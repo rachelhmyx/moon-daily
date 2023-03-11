@@ -10,11 +10,11 @@ import Categories from "./pages/Categories/index";
 import { Layout } from "antd";
 import SideMenuBar from "./components/SideMenuBar";
 import numeral from "numeral";
-
 import Products from "./pages/Products/index";
 import Suppliers from "./pages/Suppliers/index";
 import OrderManagement from "./pages/Orders/index";
 import NotFoundPage from "./pages/404/index";
+import Register from "./pages/Resgister/index";
 import "numeral/locales/vi";
 numeral.locale("vi");
 
@@ -28,6 +28,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
         <Layout>
           <Layout>
